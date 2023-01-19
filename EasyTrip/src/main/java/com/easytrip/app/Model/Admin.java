@@ -8,6 +8,8 @@ import lombok.Data;
 @Data
 public class Admin extends User {
 
+	
+	
 	private Integer adminId;
 	private String adminName;
 	private String mobileNo;
