@@ -4,10 +4,13 @@ import javax.persistence.Entity;
 
 import lombok.Data;
 
-@Entity
+//@Entity
+
 @Data
 public class Admin extends User {
 
+	
+	
 	private Integer adminId;
 	private String adminName;
 	private String mobileNo;
