@@ -25,6 +25,7 @@ public class TicketDetails {
 	@OneToMany(cascade = CascadeType.ALL,mappedBy = "ticket")
 	private Set<Package> packageSet = new HashSet<>();
 	
-	
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "")	
+	private Set<Route> routeSet = new HashSet<>();
 
 }
