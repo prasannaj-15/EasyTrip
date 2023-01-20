@@ -37,7 +37,7 @@ public class Booking {
 	
 	
 	@OneToMany(mappedBy = "booking",cascade = CascadeType.ALL)
-	private Set<Package> packageSet = new HashSet<>() ;
+	private Set<TripPackage> packageSet = new HashSet<>() ;
 	
 	
 	

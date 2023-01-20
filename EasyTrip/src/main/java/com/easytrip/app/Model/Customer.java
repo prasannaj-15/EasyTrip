@@ -40,6 +40,7 @@ public class Customer extends User {
 	
 	@OneToMany(mappedBy="customer" ,cascade=CascadeType.ALL)
 	private Set<Feedback> feedbackSet =new HashSet<>();
+
 	
 	
 }
