@@ -14,6 +14,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.Past;
 
 import lombok.Data;
 
@@ -28,6 +29,7 @@ public class Booking {
 	private String bookingType;
 	private String bookingDescription;
 	private String bookingTitle;
+	@Past(message = "date can't be empty")
 	private	LocalDate bookingDate;
 	
 	

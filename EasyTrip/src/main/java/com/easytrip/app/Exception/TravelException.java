@@ -1,6 +1,6 @@
 package com.easytrip.app.Exception;
 
-public class TravelException extends Exception {
+public class TravelException extends RuntimeException {
 
 	public TravelException() {
 		// TODO Auto-generated constructor stub

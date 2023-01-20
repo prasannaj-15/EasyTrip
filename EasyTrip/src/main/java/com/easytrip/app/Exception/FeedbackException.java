@@ -1,6 +1,6 @@
 package com.easytrip.app.Exception;
 
-public class FeedbackException extends Exception {
+public class FeedbackException extends RuntimeException {
 
 	public FeedbackException() {
 		// TODO Auto-generated constructor stub
