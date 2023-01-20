@@ -16,17 +16,26 @@ import javax.persistence.OneToMany;
 
 import org.hibernate.annotations.ManyToAny;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
+@Setter
+@Getter
 public class Customer extends User {
 	
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer customerId;
+
 	
 	final String userType = "Customer";
 	
@@ -38,6 +47,7 @@ public class Customer extends User {
 	
 	@OneToMany(mappedBy="customer" ,cascade=CascadeType.ALL)
 	private Set<Feedback> feedbackSet =new HashSet<>();
+
 
 	
 	
