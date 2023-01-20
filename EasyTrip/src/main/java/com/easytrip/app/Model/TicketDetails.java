@@ -23,7 +23,7 @@ public class TicketDetails {
 	private String ticketStatus;
 	
 	@OneToMany(cascade = CascadeType.ALL,mappedBy = "ticket")
-	private Set<Package> packageSet = new HashSet<>();
+	private Set<TripPackage> packageSet = new HashSet<>();
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "ticketDetails")	
 	private Set<Route> routeSet = new HashSet<>();
