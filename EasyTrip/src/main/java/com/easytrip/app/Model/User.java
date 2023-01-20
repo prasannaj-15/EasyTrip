@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @MappedSuperclass
 public class User {
-	
+
 	private String userName;
 	private String userMobileNo;
 	private String userEmail;

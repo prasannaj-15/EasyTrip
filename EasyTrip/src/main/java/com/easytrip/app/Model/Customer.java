@@ -35,8 +35,9 @@ public class Customer extends User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer customerId;
-	final String userType="Customer";
+
 	
+	final String userType = "Customer";
 	
 	@Embedded
 	private Address customerAddress;
@@ -47,8 +48,7 @@ public class Customer extends User {
 	@OneToMany(mappedBy="customer" ,cascade=CascadeType.ALL)
 	private Set<Feedback> feedbackSet =new HashSet<>();
 
-	
-	
+
 	
 	
 }

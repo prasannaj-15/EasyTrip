@@ -1,5 +1,8 @@
 package com.easytrip.app.Model;
 
+import java.time.LocalDateTime;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -8,21 +11,20 @@ import javax.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 
 @Data
 @AllArgsConstructor
-@RequiredArgsConstructor
+@NoArgsConstructor
+@ToString
 @Entity
-public class Admin extends User {
+public class CurrentUserSession {
 
-	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Integer adminId;
-	final String userType = "Admin";
+	@Column(unique = true)
+	private Integer userId;
 	
-	
-	
+	private String uuid;
+	private LocalDateTime localDateTime;
 	
 }
