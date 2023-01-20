@@ -27,10 +27,8 @@ public class Customer extends User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer customerId;
-	private String customerName;
-	private String customerMobileNo;
-	private String customerEmail;
 	
+	final String userType = "Customer";
 	
 	@Embedded
 	private Address customerAddress;
