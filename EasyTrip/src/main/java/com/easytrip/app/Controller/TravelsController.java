@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.easytrip.app.Exception.TravelException;
@@ -27,42 +28,42 @@ public class TravelsController {
 	private TravelsService tService;
 	
 	@PostMapping("/travels")
-	public ResponseEntity<Travels> addTravelsHandler(@RequestBody Travels travel) throws TravelException{
+	public ResponseEntity<Travels> addTravelsHandler(@RequestBody Travels travel, @RequestParam(required = false) String key) throws TravelException{
 		
-		Travels addTravels =tService.addTravels(travel);
+		Travels addTravels =tService.addTravels(travel, key);
 		
 		return new ResponseEntity<Travels>(addTravels,HttpStatus.CREATED);
 	}
 	
 	@PutMapping("/travels")
-	public ResponseEntity<Travels> updateTravelsHandler(@RequestBody Travels travel) throws TravelException{
+	public ResponseEntity<Travels> updateTravelsHandler(@RequestBody Travels travel, @RequestParam(required = false) String key) throws TravelException{
 		
-		Travels updateTravels =tService.updateTravels(travel);
+		Travels updateTravels =tService.updateTravels(travel, key);
 		
 		return new ResponseEntity<Travels>(updateTravels,HttpStatus.ACCEPTED);
 	}
 	
 	@DeleteMapping("/travels/{travelId}")
-	public ResponseEntity<Travels> removeTravelsHandler(@PathVariable("travelId") Integer travelId) throws TravelException{
+	public ResponseEntity<Travels> removeTravelsHandler(@PathVariable("travelId") Integer travelId, @RequestParam(required = false) String key) throws TravelException{
 		
-		Travels deletedTravels =tService.removeTravels(travelId);
+		Travels deletedTravels =tService.removeTravels(travelId, key);
 		
 		return new ResponseEntity<Travels>(deletedTravels,HttpStatus.OK);
 	}
 	
 	@JsonIgnore
 	@GetMapping("/searchTravels/{travelId}")
-	public ResponseEntity<Travels> searchTravelsByIdHandler(@PathVariable("travelId") Integer travelId) throws TravelException{
+	public ResponseEntity<Travels> searchTravelsByIdHandler(@PathVariable("travelId") Integer travelId, @RequestParam(required = false) String key) throws TravelException{
 		
-		Travels travels =tService.searchTravels(travelId);
+		Travels travels =tService.searchTravels(travelId, key);
 		
 		return new ResponseEntity<Travels>(travels,HttpStatus.OK);
 	}
 	
 	@JsonIgnore
 	@GetMapping("viewTravels")
-	public ResponseEntity<List<Travels>> viewTravelsByIdHandler() throws TravelException{
-		List<Travels> travels=tService.viewTravels();
+	public ResponseEntity<List<Travels>> viewTravelsByIdHandler(@RequestParam(required = false) String key) throws TravelException{
+		List<Travels> travels=tService.viewTravels(key);
 		
 		return new ResponseEntity<>(travels, HttpStatus.OK);
 	}

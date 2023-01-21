@@ -52,24 +52,24 @@ public class Booking {
 	private TicketDetails ticketDetails;
 
 
-
-	public Booking(Integer bookingId, String bookingType, String bookingDescription, String bookingTitle,
-			@Past(message = "date can't be empty") LocalDate bookingDate, Customer customer,
-			Set<TripPackage> packageSet, TicketDetails ticketDetails) {
-		super();
-		this.bookingId = bookingId;
-		this.bookingType = bookingType;
-		this.bookingDescription = bookingDescription;
-		this.bookingTitle = bookingTitle;
-		this.bookingDate = bookingDate;
-		this.customer = customer;
-		this.packageSet = packageSet;
-		this.ticketDetails = ticketDetails;
-	}
-
 	public Booking() {
 		super();
 	}
+
+
+	public Booking(Integer bookingId, String bookingType, String bookingDescription, String bookingTitle,
+		@Past(message = "date can't be empty") LocalDateTime bookingDate, Customer customer,
+		Set<TripPackage> packageSet, TicketDetails ticketDetails) {
+	super();
+	this.bookingId = bookingId;
+	this.bookingType = bookingType;
+	this.bookingDescription = bookingDescription;
+	this.bookingTitle = bookingTitle;
+	this.bookingDate = bookingDate;
+	this.customer = customer;
+	this.packageSet = packageSet;
+	this.ticketDetails = ticketDetails;
+}
 
 
 	public Integer getBookingId() {

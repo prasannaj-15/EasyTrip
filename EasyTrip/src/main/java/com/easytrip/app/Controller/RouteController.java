@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.easytrip.app.Exception.RouteException;
@@ -28,41 +29,41 @@ public class RouteController {
 	private RouteService rService;
 	
 	@PostMapping("/route")
-	public ResponseEntity<Route> addBusHandler(@RequestBody Route route) throws RouteException{
+	public ResponseEntity<Route> addBusHandler(@RequestBody Route route, @RequestParam(required = false) String key) throws RouteException{
 		
-		Route savedRoute =rService.addRoute(route);
+		Route savedRoute =rService.addRoute(route, key);
 		
 		return new ResponseEntity<Route>(savedRoute,HttpStatus.CREATED);
 	}
 	
 	@PutMapping("/route")
-	public ResponseEntity<Route> updateBusHandler(@RequestBody Route route) throws RouteException{
+	public ResponseEntity<Route> updateBusHandler(@RequestBody Route route, @RequestParam(required = false) String key) throws RouteException{
 		
-		Route updateRoute =rService.addRoute(route);
+		Route updateRoute =rService.addRoute(route, key);
 		
 		return new ResponseEntity<Route>(updateRoute,HttpStatus.ACCEPTED);
 	}
 	
 	
 	@DeleteMapping("/route/{routeId}")
-	public ResponseEntity<Route> removeBusHandler(@PathVariable("routeId") Integer routeId) throws RouteException{
+	public ResponseEntity<Route> removeBusHandler(@PathVariable("routeId") Integer routeId, @RequestParam(required = false) String key) throws RouteException{
 		
-		Route deletedRoute =rService.removeRoute(routeId);
+		Route deletedRoute =rService.removeRoute(routeId, key);
 		
 		return new ResponseEntity<Route>(deletedRoute,HttpStatus.OK);
 	}
 	
 	@GetMapping("/searchRoute/{routeId}")
-	public ResponseEntity<Route> searchByIdBusHandler(@PathVariable("routeId") Integer routeId) throws RouteException{
+	public ResponseEntity<Route> searchByIdBusHandler(@PathVariable("routeId") Integer routeId, @RequestParam(required = false) String key) throws RouteException{
 		
-		Route searchRoute =rService.searchRoute(routeId);
+		Route searchRoute =rService.searchRoute(routeId, key);
 		
 		return new ResponseEntity<Route>(searchRoute,HttpStatus.OK);
 	}
 	
 	@GetMapping("/viewRoute")
-	public ResponseEntity<List<Route>> viewRouteByIdHandler() throws TravelException{
-		List<Route> route=rService.viewRoute();
+	public ResponseEntity<List<Route>> viewRouteByIdHandler(@RequestParam(required = false) String key) throws TravelException{
+		List<Route> route=rService.viewRoute(key);
 		
 		return new ResponseEntity<>(route, HttpStatus.OK);
 	}

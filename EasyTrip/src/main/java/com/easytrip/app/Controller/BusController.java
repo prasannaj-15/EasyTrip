@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.easytrip.app.Exception.BusException;
@@ -28,17 +29,17 @@ public class BusController {
 	private BusService bService;
 	
 	@PostMapping("/bus")
-	public ResponseEntity<Bus> addBusHandler(@RequestBody Bus bus) throws BusException{
+	public ResponseEntity<Bus> addBusHandler(@RequestBody Bus bus, @RequestParam(required = false) String key) throws BusException{
 		
-		Bus addBus =bService.addBus(bus);
+		Bus addBus =bService.addBus(bus, key);
 		
 		return new ResponseEntity<Bus>(addBus,HttpStatus.CREATED);
 	}
 	
 	@PutMapping("/bus")
-	public ResponseEntity<Bus> updateBusHandler(@RequestBody Bus bus) throws BusException{
+	public ResponseEntity<Bus> updateBusHandler(@RequestBody Bus bus, @RequestParam(required = false) String key) throws BusException{
 		
-		Bus updateBus =bService.addBus(bus);
+		Bus updateBus =bService.addBus(bus, key);
 		
 		return new ResponseEntity<Bus>(updateBus,HttpStatus.ACCEPTED);
 	}
@@ -46,34 +47,34 @@ public class BusController {
 	
 	
 	@DeleteMapping("/bus/{busId}")
-	public ResponseEntity<Bus> removeBusHandler(@PathVariable("busId") Integer busId) throws BusException{
+	public ResponseEntity<Bus> removeBusHandler(@PathVariable("busId") Integer busId, @RequestParam(required = false) String key) throws BusException{
 		
-		Bus deletedBus =bService.removeBus(busId);
+		Bus deletedBus =bService.removeBus(busId, key);
 		
 		return new ResponseEntity<Bus>(deletedBus,HttpStatus.OK);
 	}
 	
 	@GetMapping("/searchBus/{busId}")
-	public ResponseEntity<Bus> searchByIdBusHandler(@PathVariable("busId") Integer busId) throws BusException{
+	public ResponseEntity<Bus> searchByIdBusHandler(@PathVariable("busId") Integer busId, @RequestParam(required = false) String key) throws BusException{
 		
-		Bus searchBus =bService.searchBus(busId);
+		Bus searchBus =bService.searchBus(busId, key);
 		
 		return new ResponseEntity<Bus>(searchBus,HttpStatus.OK);
 	}
 	
 	
 	@PutMapping("/bus/{busId}/{travelId}")
-	public ResponseEntity<Bus> assignBusToTravelHandler(@PathVariable("busId") Integer busId,@PathVariable("travelId") Integer travelId){
+	public ResponseEntity<Bus> assignBusToTravelHandler(@PathVariable("busId") Integer busId,@PathVariable("travelId") Integer travelId, @RequestParam(required = false) String key){
 		
-    Bus bus= bService.assignBusToTravels(busId, travelId);
+    Bus bus= bService.assignBusToTravels(busId, travelId, key);
     return new ResponseEntity<Bus>(bus, HttpStatus.OK);
     
     }
     
 	@PutMapping("/bus/{busId}/{routeId}")
-	public ResponseEntity<Bus> assignHotelToTripPackageHandler(@PathVariable("busId") Integer busId,@PathVariable("routeId") Integer routeId){
+	public ResponseEntity<Bus> assignHotelToTripPackageHandler(@PathVariable("busId") Integer busId,@PathVariable("routeId") Integer routeId, @RequestParam(required = false) String key){
 //		System.out.println(tripPackageId);
-		Bus bus= bService.assignBusToTripRoutes(busId, routeId);
+		Bus bus= bService.assignBusToTripRoutes(busId, routeId, key);
 
 		return new ResponseEntity<Bus>(bus, HttpStatus.OK);
 		
