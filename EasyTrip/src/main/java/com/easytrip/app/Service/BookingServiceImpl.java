@@ -3,6 +3,7 @@ package com.easytrip.app.Service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -13,6 +14,7 @@ import com.easytrip.app.Exception.AdminException;
 import com.easytrip.app.Exception.BookingException;
 import com.easytrip.app.Exception.CustomerException;
 import com.easytrip.app.Exception.HotelException;
+import com.easytrip.app.Exception.PackageException;
 import com.easytrip.app.Model.Booking;
 import com.easytrip.app.Model.CurrentUserSession;
 import com.easytrip.app.Model.Customer;
@@ -32,6 +34,7 @@ public class BookingServiceImpl implements BookingService {
 	@Autowired
 	public CustomerRepository customerRepository;
 	
+
 	@Autowired
 	private SessionRepository sessionRepo;
 	
@@ -135,6 +138,7 @@ public class BookingServiceImpl implements BookingService {
 			  throw new BookingException("Invalid Booking details.. Please provide proper details");
 		  
 	}
+
 
 	@Override
 	public Set<Booking> assignCustomertoBooking(Customer customer, Integer customerId) throws BookingException {

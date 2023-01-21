@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.easytrip.app.Exception.AdminException;
+import com.easytrip.app.Exception.BookingException;
 import com.easytrip.app.Exception.PackageException;
 import com.easytrip.app.Model.Booking;
 import com.easytrip.app.Model.CurrentUserSession;
@@ -16,6 +17,7 @@ import com.easytrip.app.Model.Route;
 import com.easytrip.app.Model.TripPackage;
 import com.easytrip.app.Repository.AdminRepository;
 import com.easytrip.app.Repository.SessionRepository;
+import com.easytrip.app.Repository.BookingRepository;
 import com.easytrip.app.Repository.TripPackageDao;
 
 
@@ -31,7 +33,10 @@ public class TripPackageServiceImplementation implements TripPackageServices {
 	
 	@Autowired
 	private SessionRepository sessionRepo;
-	
+  
+  @Autowired
+	private BookingRepository bdao;
+
 	
 	@Override
 	public TripPackage addTripPackage(TripPackage pack, String key) throws PackageException, AdminException {
@@ -78,12 +83,45 @@ public class TripPackageServiceImplementation implements TripPackageServices {
 		Optional<TripPackage> opt = pdao.findById(packageId);
 		if (opt.isPresent()) {
 			TripPackage tripPackage = opt.get();
-			pdao.delete(tripPackage);
+			
+			Set<Hotel> hSet = tripPackage.getHotelSet();
+			for(Hotel h1:hSet) {
+				h1.setTripPackage(null);
+			}
+			hSet.clear();
+			tripPackage.setHotelSet(hSet);
+			
+			pdao.deleteById(tripPackage.getPackageId());
 			return tripPackage;
 
 		} else
-			throw new PackageException("Student does not exist with roll :" + packageId);
+			throw new PackageException("Package does not exist with roll :" + packageId);
 
+	}
+
+	@Override
+	public TripPackage assignBookingToTripPackage(Integer bookingId, Integer tripPackageId)
+			throws BookingException, PackageException {
+
+		Optional<Booking> optBooking=bdao.findById(bookingId);
+		Optional<TripPackage> optPackage=pdao.findById(tripPackageId);
+		if(optBooking.isPresent()) {
+			Booking booking = optBooking.get();
+			if(optPackage.isPresent()) {
+				TripPackage tPackage =optPackage.get();
+				
+				booking.getPackageSet().add(tPackage);
+				tPackage.setBooking(booking);
+				bdao.save(booking);
+				return tPackage;
+			}else {
+				throw new PackageException("No TripPackage found with id--> "+tripPackageId);
+			}
+			
+		}else{
+			throw new PackageException("No Booking found with id--> "+bookingId);
+		}
+		
 	}
 
 

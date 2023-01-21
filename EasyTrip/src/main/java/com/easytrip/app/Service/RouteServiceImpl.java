@@ -1,7 +1,9 @@
 package com.easytrip.app.Service;
 
+import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.easytrip.app.Exception.BusException;
@@ -12,6 +14,7 @@ import com.easytrip.app.Repository.RouteDao;
 
 @Service
 public class RouteServiceImpl implements RouteService{
+	@Autowired
 	private RouteDao rDao;
 	
 	@Override
@@ -54,6 +57,16 @@ public class RouteServiceImpl implements RouteService{
 			return route;
 		}else {
 			throw new RouteException("Invalid routeId...........");
+		}
+	}
+
+	@Override
+	public List<Route> viewRoute() throws RouteException {
+		List<Route> routes=rDao.findAll();
+		if(routes.size()==0) {
+			throw new RouteException("Routes not found..........");
+		}else {
+			return routes;
 		}
 	}
 

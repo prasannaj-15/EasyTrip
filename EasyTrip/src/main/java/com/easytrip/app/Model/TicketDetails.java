@@ -11,7 +11,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -31,11 +30,13 @@ public class TicketDetails {
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "ticketDetails")	
 	private Set<Route> routeSet = new HashSet<>();
 	
+
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name="bookingID")
 	@JsonIgnore
 	private Booking booking;
 	
+
 
 	public Integer getTicketId() {
 		return ticketId;

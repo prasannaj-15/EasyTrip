@@ -20,14 +20,13 @@ import com.easytrip.app.Service.TravelsService;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @RestController
-@RequestMapping("easytripapp/travels")
+//@RequestMapping("easytripapp/travels")
 public class TravelsController {
 	
 	@Autowired
 	private TravelsService tService;
 	
-	@PostMapping("/addTravels")
-	@JsonIgnore
+	@PostMapping("/travels")
 	public ResponseEntity<Travels> addTravelsHandler(@RequestBody Travels travel) throws TravelException{
 		
 		Travels addTravels =tService.addTravels(travel);
@@ -35,8 +34,7 @@ public class TravelsController {
 		return new ResponseEntity<Travels>(addTravels,HttpStatus.CREATED);
 	}
 	
-	@PutMapping("/updateTravels")
-	@JsonIgnore
+	@PutMapping("/travels")
 	public ResponseEntity<Travels> updateTravelsHandler(@RequestBody Travels travel) throws TravelException{
 		
 		Travels updateTravels =tService.updateTravels(travel);
@@ -44,8 +42,7 @@ public class TravelsController {
 		return new ResponseEntity<Travels>(updateTravels,HttpStatus.ACCEPTED);
 	}
 	
-	@JsonIgnore
-	@DeleteMapping("/removeTravels/{travelId}")
+	@DeleteMapping("/travels/{travelId}")
 	public ResponseEntity<Travels> removeTravelsHandler(@PathVariable("travelId") Integer travelId) throws TravelException{
 		
 		Travels deletedTravels =tService.removeTravels(travelId);
@@ -53,6 +50,7 @@ public class TravelsController {
 		return new ResponseEntity<Travels>(deletedTravels,HttpStatus.OK);
 	}
 	
+	@JsonIgnore
 	@GetMapping("/searchTravels/{travelId}")
 	public ResponseEntity<Travels> searchTravelsByIdHandler(@PathVariable("travelId") Integer travelId) throws TravelException{
 		
@@ -61,7 +59,8 @@ public class TravelsController {
 		return new ResponseEntity<Travels>(travels,HttpStatus.OK);
 	}
 	
-	@GetMapping("travels/viewTravels")
+	@JsonIgnore
+	@GetMapping("viewTravels")
 	public ResponseEntity<List<Travels>> viewTravelsByIdHandler() throws TravelException{
 		List<Travels> travels=tService.viewTravels();
 		

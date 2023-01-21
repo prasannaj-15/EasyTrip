@@ -101,7 +101,7 @@ public class HotelServicesImplementation implements HotelServices {
 				hdao.save(hotel);
 				return hotel;
 			}else {
-				throw new PackageException("No Hotel found with id--> "+tripPackageId);
+				throw new PackageException("No TripPackage found with id--> "+tripPackageId);
 			}
 			
 		}else{

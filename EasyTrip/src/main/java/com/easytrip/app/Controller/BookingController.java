@@ -58,13 +58,6 @@ public class BookingController {
 	}
 	
 	
-	@PutMapping("/booking/{cusotmerId}")
-	public ResponseEntity<Set<Booking>> assingcustomerToBookingHandler(@RequestBody Customer customer,@PathVariable("customerId") Integer customerId)
-	{
-		Set<Booking> booking = bookingService.assignCustomertoBooking(customer, customerId);
-		
-		return new ResponseEntity<Set<Booking>>(booking,HttpStatus.OK);
-	}
 	
 	
 	

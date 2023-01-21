@@ -17,6 +17,8 @@ import javax.persistence.OneToMany;
 
 import org.hibernate.validator.constraints.UniqueElements;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -32,7 +34,7 @@ private String packageDescription;
 private String packageType;
 private Double packageCost;
 
-
+@JsonIgnore
 @ManyToOne(cascade = CascadeType.ALL)
 private Booking booking; 
 

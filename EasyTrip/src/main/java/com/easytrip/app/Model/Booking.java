@@ -33,6 +33,7 @@ public class Booking {
 	private String bookingType;
 	private String bookingDescription;
 	private String bookingTitle;
+	
 	@Past(message = "date can't be empty")
 	private	LocalDateTime bookingDate;
 	
@@ -49,6 +50,27 @@ public class Booking {
 	@JoinColumn(name="ticketID")
 	@JsonIgnore
 	private TicketDetails ticketDetails;
+
+
+
+	public Booking(Integer bookingId, String bookingType, String bookingDescription, String bookingTitle,
+			@Past(message = "date can't be empty") LocalDate bookingDate, Customer customer,
+			Set<TripPackage> packageSet, TicketDetails ticketDetails) {
+		super();
+		this.bookingId = bookingId;
+		this.bookingType = bookingType;
+		this.bookingDescription = bookingDescription;
+		this.bookingTitle = bookingTitle;
+		this.bookingDate = bookingDate;
+		this.customer = customer;
+		this.packageSet = packageSet;
+		this.ticketDetails = ticketDetails;
+	}
+
+	public Booking() {
+		super();
+	}
+
 
 	public Integer getBookingId() {
 		return bookingId;
@@ -82,6 +104,7 @@ public class Booking {
 		this.bookingTitle = bookingTitle;
 	}
 
+
 	public LocalDateTime getBookingDate() {
 		return bookingDate;
 	}
@@ -113,9 +136,6 @@ public class Booking {
 	public void setTicketDetails(TicketDetails ticketDetails) {
 		this.ticketDetails = ticketDetails;
 	}
-	
 
-	
-	
 	
 }

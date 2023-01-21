@@ -15,19 +15,19 @@ import org.springframework.web.bind.annotation.RestController;
 import com.easytrip.app.Exception.BusException;
 import com.easytrip.app.Exception.TravelException;
 import com.easytrip.app.Model.Bus;
+import com.easytrip.app.Model.Hotel;
 import com.easytrip.app.Model.Travels;
 import com.easytrip.app.Service.BusService;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @RestController
-@RequestMapping("easytripapp/bus")
+//@RequestMapping("easytripapp/bus")
 public class BusController {
 	
 	@Autowired
 	private BusService bService;
 	
-	@PostMapping("/addBus")
-	@JsonIgnore
+	@PostMapping("/bus")
 	public ResponseEntity<Bus> addBusHandler(@RequestBody Bus bus) throws BusException{
 		
 		Bus addBus =bService.addBus(bus);
@@ -35,8 +35,7 @@ public class BusController {
 		return new ResponseEntity<Bus>(addBus,HttpStatus.CREATED);
 	}
 	
-	@PutMapping("/updateBus")
-	@JsonIgnore
+	@PutMapping("/bus")
 	public ResponseEntity<Bus> updateBusHandler(@RequestBody Bus bus) throws BusException{
 		
 		Bus updateBus =bService.addBus(bus);
@@ -46,8 +45,7 @@ public class BusController {
 	
 	
 	
-	@JsonIgnore
-	@DeleteMapping("/removeBus/{busId}")
+	@DeleteMapping("/bus/{busId}")
 	public ResponseEntity<Bus> removeBusHandler(@PathVariable("busId") Integer busId) throws BusException{
 		
 		Bus deletedBus =bService.removeBus(busId);
@@ -63,4 +61,23 @@ public class BusController {
 		return new ResponseEntity<Bus>(searchBus,HttpStatus.OK);
 	}
 	
+	
+	@PutMapping("/bus/{busId}/{travelId}")
+	public ResponseEntity<Bus> assignBusToTravelHandler(@PathVariable("busId") Integer busId,@PathVariable("travelId") Integer travelId){
+		
+    Bus bus= bService.assignBusToTravels(busId, travelId);
+    return new ResponseEntity<Bus>(bus, HttpStatus.OK);
+    
+    }
+    
+	@PutMapping("/bus/{busId}/{routeId}")
+	public ResponseEntity<Bus> assignHotelToTripPackageHandler(@PathVariable("busId") Integer busId,@PathVariable("routeId") Integer routeId){
+//		System.out.println(tripPackageId);
+		Bus bus= bService.assignBusToTripRoutes(busId, routeId);
+
+		return new ResponseEntity<Bus>(bus, HttpStatus.OK);
+		
+	}
+	
+
 }
