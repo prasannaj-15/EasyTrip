@@ -69,11 +69,14 @@ public class HotelServicesImplementation implements HotelServices {
 			Hotel hotel =opt.get();
 			TripPackage tripPackage= hotel.getTripPackage();
 			if(tripPackage==null) {
+//				System.out.println("insde");
 				hdao.delete(hotel);
 				return hotel;
 			}else {
 		Set<Hotel> hSet =	tripPackage.getHotelSet();
 		hSet.remove(hotel);
+		
+		hotel.setTripPackage(null);
 		hdao.delete(hotel);
 		return hotel;
 		}}else{
@@ -82,63 +85,50 @@ public class HotelServicesImplementation implements HotelServices {
 		
 	}
 
+
 	@Override
-	public Set<Hotel> assignHotelToTripPackage(TripPackage tripPackage, Integer tripPackageId)
-			throws HotelException, PackageException{
-		Optional<TripPackage> tripPackageOpt= pdao.findById(tripPackage.getPackageId());
+	public Hotel assignHotelToTripPackage(Integer hotelId, Integer tripPackageId)
+			throws HotelException, PackageException {
 		
-			if(tripPackageOpt.isPresent()) {
-				
-				TripPackage existingTripPackage = tripPackageOpt.get();
-				
-				Set<Hotel> setHotel=tripPackage.getHotelSet();
-				
-				Set<Hotel> newHotel = new HashSet<>();
-				
-				for(Hotel hotel:setHotel){
-					
-					hotel.setTripPackage(existingTripPackage);
-					Hotel h1 = hdao.save(hotel);
-					newHotel.add(h1);
-					
-//					existingTripPackage.getHotelSet().add(hotel);
-					
-				}
-				
-//				existingTripPackage.setHotelSet(Hotel);
-				
-				pdao.save(existingTripPackage);
-				
-				return setHotel;
+		Optional<Hotel> optHotel=hdao.findById(hotelId);
+		Optional<TripPackage> optPackage=pdao.findById(tripPackageId);
+		if(optHotel.isPresent()) {
+			Hotel hotel = optHotel.get();
+			if(optPackage.isPresent()) {
+				TripPackage tPackage =optPackage.get();
+				tPackage.getHotelSet().add(hotel);
+				hotel.setTripPackage(tPackage);
+				hdao.save(hotel);
+				return hotel;
 			}else {
-				throw new PackageException("No Pacakage found with given Id..."+tripPackageId);
+				throw new PackageException("No Hotel found with id--> "+tripPackageId);
 			}
+			
+		}else{
+			throw new PackageException("No Hotel found with id--> "+hotelId);
+		}
 		
 	}
 
-//	@Override
-//	public Hotel assignHotelToTripPackage(Integer hotelId, Integer tripPackageId)
-//			throws HotelException, PackageException {
-//		
-//		Optional<Hotel> optHotel=hdao.findById(hotelId);
-//		Optional<TripPackage> optPackage=pdao.findById(tripPackageId);
-//		if(optHotel.isPresent()) {
-//			Hotel hotel = optHotel.get();
-//			if(optPackage.isPresent()) {
-//				TripPackage tPackage =optPackage.get();
-//				tPackage.getHotelSet().add(hotel);
-//				hotel.setTripPackage(tPackage);
-//				hdao.save(hotel);
-//				return hotel;
-//			}else {
-//				throw new PackageException("No Hotel found with id--> "+tripPackageId);
-//			}
-//			
-//		}else{
-//			throw new PackageException("No Hotel found with id--> "+hotelId);
-//		}
+	@Override
+	public Set<Hotel> getHotelsByPackageId(Integer tripPackageId) throws HotelException {
+		Optional<TripPackage> opt = pdao.findById(tripPackageId);
+		if(opt.isPresent()){
+			TripPackage tPackage =opt.get();
+			Set<Hotel> hotels= tPackage.getHotelSet();
+			if(hotels.size()!=0) {
+				
+				return hotels;
+			}else {
+				throw new HotelException("No hotels found in the given package");
+			}
+			}
+			else {
 		
-//	}
+			throw new HotelException("No package found with given PackageId..."+tripPackageId);
+		}
+		
+	
 
 
 	
@@ -146,5 +136,5 @@ public class HotelServicesImplementation implements HotelServices {
 	}
 	
 	
-	
+}
 
