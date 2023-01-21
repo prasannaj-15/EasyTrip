@@ -26,7 +26,7 @@ public class Bus {
 	@JoinColumn(name="travelId")
 	@JsonIgnore
 	private Travels travels;	
-	
+	@JsonIgnore
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name="routeId")
 	private Route route;

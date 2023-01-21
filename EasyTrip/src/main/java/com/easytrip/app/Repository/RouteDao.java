@@ -8,4 +8,5 @@ import com.easytrip.app.Model.Route;
 @Repository
 public interface RouteDao extends JpaRepository<Route,Integer>{
 
+	
 }

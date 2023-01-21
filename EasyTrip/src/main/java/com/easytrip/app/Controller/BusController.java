@@ -64,9 +64,20 @@ public class BusController {
 	
 	@PutMapping("/bus/{busId}/{travelId}")
 	public ResponseEntity<Bus> assignBusToTravelHandler(@PathVariable("busId") Integer busId,@PathVariable("travelId") Integer travelId){
-		Bus bus= bService.assignBusToTravels(busId, travelId);
+		
+    Bus bus= bService.assignBusToTravels(busId, travelId);
+    return new ResponseEntity<Bus>(bus, HttpStatus.OK);
+    
+    }
+    
+	@PutMapping("/bus/{busId}/{routeId}")
+	public ResponseEntity<Bus> assignHotelToTripPackageHandler(@PathVariable("busId") Integer busId,@PathVariable("routeId") Integer routeId){
+//		System.out.println(tripPackageId);
+		Bus bus= bService.assignBusToTripRoutes(busId, routeId);
+
 		return new ResponseEntity<Bus>(bus, HttpStatus.OK);
 		
 	}
 	
+
 }

@@ -54,7 +54,7 @@ public class HotelController {
 	}
 	
 	@PutMapping("/hotels/{hotelId}/{tripPackageId}")
-	public ResponseEntity<Hotel> assignHotelToTripPackageHandler(@PathVariable Integer hotelId,@PathVariable("tripPackageId") Integer tripPackageId){
+	public ResponseEntity<Hotel> assignHotelToTripPackageHandler(@PathVariable("hotelId") Integer hotelId,@PathVariable("tripPackageId") Integer tripPackageId){
 //		System.out.println(tripPackageId);
 		Hotel hotel= hotelServices.assignHotelToTripPackage(hotelId, tripPackageId);
 		return new ResponseEntity<Hotel>(hotel, HttpStatus.OK);
