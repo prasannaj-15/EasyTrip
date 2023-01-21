@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.easytrip.app.Model.Admin;
@@ -33,10 +34,10 @@ public class AdminController {
 	
 	
 	@PutMapping("/admin")
-	public ResponseEntity<Admin> updateAdminHandler(@RequestBody Admin admin){
+	public ResponseEntity<Admin> updateAdminHandler(@RequestBody Admin admin,@RequestParam(required = false) String key){
 
 		
-		Admin updatedAdmin = adminService.updateAdmin(admin);
+		Admin updatedAdmin = adminService.updateAdmin(admin,key);
 		
 		return new ResponseEntity<>(updatedAdmin, HttpStatus.CREATED);
 	}

@@ -9,7 +9,7 @@ public interface AdminService {
 	
 	public Admin getAdminDetails(Integer adminId) throws AdminException;
 	
-	public Admin updateAdmin(Admin admin) throws AdminException;
+	public Admin updateAdmin(Admin admin,String key) throws AdminException;
 	
 	public Admin deleteAdmin(Integer adminId) throws AdminException; 
 	

@@ -7,7 +7,9 @@ import org.springframework.stereotype.Service;
 
 import com.easytrip.app.Exception.AdminException;
 import com.easytrip.app.Model.Admin;
+import com.easytrip.app.Model.CurrentUserSession;
 import com.easytrip.app.Repository.AdminRepository;
+import com.easytrip.app.Repository.SessionRepository;
 
 
 @Service
@@ -15,6 +17,9 @@ public class AdminServiceImpl implements AdminService{
 
 	@Autowired
 	private AdminRepository adminRepo;
+	
+	@Autowired
+	private SessionRepository sessionRepo;
 	
 	
 	@Override
@@ -33,13 +38,25 @@ public class AdminServiceImpl implements AdminService{
 
 
 	@Override
-	public Admin updateAdmin(Admin admin) throws AdminException {
+	public Admin updateAdmin(Admin admin,String key) throws AdminException {
 
+		CurrentUserSession loggedInUser = sessionRepo.findByUuid(key);
+		
+		if(loggedInUser == null) {
+			throw new AdminException("Please provide a valid key to update a customer");
+		}
+		
+		if(admin.getAdminId() == loggedInUser.getUserId()) {
+			
 		Admin loggedAdmin = adminRepo.findById(admin.getAdminId()).orElseThrow(()-> new AdminException("Admin not Log In. please Log In first."));
 		
 		admin.setAdminId(loggedAdmin.getAdminId());
 		
 		return adminRepo.save(admin);
+		
+		}
+		else
+			throw new AdminException("Invalid Customer Details, please login first");
 	}
 
 

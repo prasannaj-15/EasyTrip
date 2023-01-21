@@ -1,19 +1,30 @@
 package com.easytrip.app.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.easytrip.app.Exception.AdminException;
 import com.easytrip.app.Exception.CustomerException;
+import com.easytrip.app.Model.CurrentUserSession;
 import com.easytrip.app.Model.Customer;
+import com.easytrip.app.Repository.AdminRepository;
 import com.easytrip.app.Repository.CustomerRepository;
+import com.easytrip.app.Repository.SessionRepository;
  
 @Service
 public class CustomerServiceImpl implements CustomerServices {
     
 	@Autowired
 	private CustomerRepository cr;
+	
+	@Autowired
+	private AdminRepository adminRepo;
+	
+	@Autowired
+	private SessionRepository sessionRepo;
 	
 	@Override
 	public Customer addCustomer(Customer customer) throws CustomerException {
@@ -67,7 +78,7 @@ public class CustomerServiceImpl implements CustomerServices {
 	}
 
 	@Override
-	public Customer viewCustomer(Integer Customer_Id) throws CustomerException {
+	public Customer viewCustomer(Integer Customer_Id) throws CustomerException,AdminException {
 
 
 		Optional<Customer> opt = cr.findById(Customer_Id);
@@ -79,6 +90,28 @@ public class CustomerServiceImpl implements CustomerServices {
 		else {
 			throw new CustomerException("Invalid Customer details. Please check teh details");
 		}		
+	}
+	@Override
+	public List<Customer> viewAllCustomers(String key) throws CustomerException {
+		
+		CurrentUserSession loggedInUser = sessionRepo.findByUuid(key);
+		
+		if(loggedInUser == null) {
+			throw new AdminException("Please provide a valid key to update a customer");
+		}
+		
+		if(loggedInUser.getUserType().equals("Admin")) {
+			
+		List<Customer> customers = cr.findAll();
+		
+		if(customers.isEmpty())
+			throw new CustomerException("No customer is present in database.");
+		
+		return customers;
+		}
+		
+		else
+			throw new AdminException("User is not Admin. This service is only accessable for admin.");
 	}
 		
 	}
