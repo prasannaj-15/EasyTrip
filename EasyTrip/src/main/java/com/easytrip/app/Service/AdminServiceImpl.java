@@ -43,7 +43,7 @@ public class AdminServiceImpl implements AdminService{
 		CurrentUserSession loggedInUser = sessionRepo.findByUuid(key);
 		
 		if(loggedInUser == null) {
-			throw new AdminException("Please provide a valid key to update a customer");
+			throw new AdminException("Please provide a valid key to update a admin");
 		}
 		
 		if(admin.getAdminId() == loggedInUser.getUserId()) {

@@ -34,25 +34,25 @@ public class CustomerController {
 	
 	
 	@PutMapping("/customer")
-	public ResponseEntity<Customer> updateCustomerHandler(@RequestBody Customer customer)
+	public ResponseEntity<Customer> updateCustomerHandler(@RequestBody Customer customer, @RequestParam(required = false) String key)
 	{
-	   Customer updateCustomer = customerService.updateCustomer(customer);
+	   Customer updateCustomer = customerService.updateCustomer(customer,key);
 	   
 	   return new ResponseEntity<Customer>(updateCustomer,HttpStatus.ACCEPTED);
 	}
 	
 	@DeleteMapping("/customer/{id}")
-	public ResponseEntity<Customer> deleteCustomerBycustomerHandler(@PathVariable("id") Customer customer)
+	public ResponseEntity<Customer> deleteCustomerBycustomerHandler(@PathVariable("id") Integer customerId,@RequestParam(required = false) String key)
 	{
-		Customer custom = customerService.deleteCustomer(customer);
+		Customer custom = customerService.deleteCustomer(customerId, key);
 		return new ResponseEntity<Customer>(custom,HttpStatus.ACCEPTED);
 	}
 	
 	
 	@GetMapping("/customer/{id}")
-	public ResponseEntity<Customer> viewCustomerbyIdHandler(@PathVariable("id") Integer customer_Id)
+	public ResponseEntity<Customer> viewCustomerbyIdHandler(@PathVariable("id") Integer customer_Id, @RequestParam(required = false) String key)
 	{
-		Customer  custom = customerService.viewCustomer(customer_Id);
+		Customer  custom = customerService.viewCustomer(customer_Id, key);
 		
 		return new ResponseEntity<Customer>(custom,HttpStatus.OK);
 	}

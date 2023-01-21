@@ -1,5 +1,7 @@
 package com.easytrip.app.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -7,15 +9,20 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.easytrip.app.Exception.AdminException;
 import com.easytrip.app.Exception.BookingException;
 import com.easytrip.app.Exception.CustomerException;
 import com.easytrip.app.Exception.HotelException;
 import com.easytrip.app.Model.Booking;
+import com.easytrip.app.Model.CurrentUserSession;
 import com.easytrip.app.Model.Customer;
 import com.easytrip.app.Model.Hotel;
+import com.easytrip.app.Model.TicketDetails;
 import com.easytrip.app.Model.TripPackage;
 import com.easytrip.app.Repository.BookingRepository;
 import com.easytrip.app.Repository.CustomerRepository;
+import com.easytrip.app.Repository.SessionRepository;
+import com.easytrip.app.Repository.TicketDetailsRepository;
 @Service
 public class BookingServiceImpl implements BookingService {
     
@@ -25,46 +32,108 @@ public class BookingServiceImpl implements BookingService {
 	@Autowired
 	public CustomerRepository customerRepository;
 	
+	@Autowired
+	private SessionRepository sessionRepo;
+	
+	@Autowired
+	private TicketDetailsRepository ticketRepo;
+	
 	@Override
-	public Booking makeBooking(Booking book) throws BookingException {
+	public Booking makeBooking(Booking book, String key) throws BookingException, CustomerException {
      
-		Booking booking = br.save(book);
-		if(booking != null)
-		{
-			return booking;
-		}
-		else {
-			throw new BookingException("sorry no booking");
-		}		
-	}
-
-	@Override
-	public Booking cancelBooking(Booking book) throws BookingException {
-
-      Optional<Booking> opt = br.findById(book.getBookingId());
-      if(opt != null)
-      {
-    	  br.deleteById(book.getBookingId());
-    	  return book;
-      }else {
-    	  throw new BookingException("Invalid booking details.");
-      }
+		CurrentUserSession loggedInUser = sessionRepo.findByUuid(key);
 		
+		if(loggedInUser == null) {
+			throw new AdminException("Login first! or Please provide a valid key");
+		}
+		
+		Customer customer  = customerRepository.findById(loggedInUser.getUserId()).orElseThrow(() -> new CustomerException("Customer not found.."));
+		
+		book.setCustomer(customer);
+		book.setBookingDate(LocalDateTime.now());
+		
+		return br.save(book);
+				
 	}
 
 	@Override
-	public Booking viewBooking(Integer bookingId) {
-    
+	public Booking cancelBooking(Integer bookingId, String key) throws BookingException {
+		
+		 CurrentUserSession loggedInUser = sessionRepo.findByUuid(key);
+		
+		if(loggedInUser == null) {
+			throw new AdminException("Login first! or Please provide a valid key");
+		}		
+		
+		Optional<Booking> opt = br.findById(bookingId);
+      
+	      if(opt != null)
+	      {
+	    	  Booking booking = opt.get();
+	    	  
+	    	  if(booking.getCustomer().getCustomerId() == loggedInUser.getUserId() || loggedInUser.getUserType().equals("Admin")) {
+	    			
+	    	  
+		    	 Set<TripPackage> packageSet  = booking.getPackageSet();
+		    	 
+		    	 for(TripPackage pack : packageSet) {
+		    		 pack.setBooking(null);
+		    	 }
+		    	 
+		    	 packageSet.clear();
+		    	 booking.setPackageSet(packageSet);
+		    	 
+//		    	  if(booking.getTicketDetails() != null) {
+//		    		  Optional<TicketDetails> ticketOpt = ticketRepo.findById(booking.getTicketDetails().getTicketId());
+//		    	  
+//		    	  if(ticketOpt.isPresent()) {
+//		    		  
+//		    		  TicketDetails ticket = ticketOpt.get();
+//		    		  
+//		    		  ticketRepo.delete(ticket);		 
+//		    	  }
+		
+		    	// } 
+		    	  br.deleteById(bookingId);
+		    	  return booking;
+	    	  
+		      }
+		      else 
+		    	  throw new BookingException("Invalid booking details.");
+	      }
+	      else 
+	    	  throw new BookingException("Invalid booking Id");
+		
+	
+	}
+
+	@Override
+	public Booking viewBooking(Integer bookingId, String key) {
+		
+		CurrentUserSession loggedInUser = sessionRepo.findByUuid(key);
+		
+		if(loggedInUser == null) {
+			throw new AdminException("Login first! or Please provide a valid key");
+		}
+		
 		  Optional<Booking> opt = br.findById(bookingId);
 		  
 		  if(opt !=null) {
-			  return opt.get();
+			 
+			  Booking booking = opt.get();
+			  
+			  if(booking.getCustomer().getCustomerId() == loggedInUser.getUserId() || loggedInUser.getUserType().equals("Admin")) {			
+				  
+				  return booking;
+				  
+			  }
+			  else 
+				  throw new BookingException("Access Denied!");
+			  
 		  }
-		  else {
+		  else 
 			  throw new BookingException("Invalid Booking details.. Please provide proper details");
-		  }
-
-		
+		  
 	}
 
 	@Override
@@ -94,9 +163,9 @@ public class BookingServiceImpl implements BookingService {
 		  customerRepository.save(existcustomer);
 		  return setBooking; 
 	}
-		else {
+		else 
 			throw new CustomerException("no booking found....");
-		}
+		
 	}
 	
 }

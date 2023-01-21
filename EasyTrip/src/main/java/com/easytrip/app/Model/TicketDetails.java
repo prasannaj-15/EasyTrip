@@ -9,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
@@ -30,7 +31,9 @@ public class TicketDetails {
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "ticketDetails")	
 	private Set<Route> routeSet = new HashSet<>();
 	
-	@OneToOne(mappedBy = "ticketDetails",cascade = CascadeType.ALL)
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name="bookingID")
+	@JsonIgnore
 	private Booking booking;
 	
 
