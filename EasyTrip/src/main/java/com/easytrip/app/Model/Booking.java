@@ -14,6 +14,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.validation.constraints.Past;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -43,7 +44,8 @@ public class Booking {
 	@OneToMany(mappedBy = "booking",cascade = CascadeType.ALL)
 	private Set<TripPackage> packageSet = new HashSet<>() ;
 	
-	
+	@OneToOne(cascade = CascadeType.ALL)
+	private TicketDetails ticketDetails;
 	
 
 }
