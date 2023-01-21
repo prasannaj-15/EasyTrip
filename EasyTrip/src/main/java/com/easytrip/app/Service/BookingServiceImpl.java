@@ -27,7 +27,7 @@ public class BookingServiceImpl implements BookingService {
 	
 	@Override
 	public Booking makeBooking(Booking book) throws BookingException {
-     
+		
 		Booking booking = br.save(book);
 		if(booking != null)
 		{

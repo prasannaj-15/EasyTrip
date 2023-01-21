@@ -32,6 +32,7 @@ public class Booking {
 	private String bookingType;
 	private String bookingDescription;
 	private String bookingTitle;
+	
 	@Past(message = "date can't be empty")
 	private	LocalDate bookingDate;
 	
@@ -46,6 +47,90 @@ public class Booking {
 	
 	@OneToOne(cascade = CascadeType.ALL)
 	private TicketDetails ticketDetails;
+
+	public Booking(Integer bookingId, String bookingType, String bookingDescription, String bookingTitle,
+			@Past(message = "date can't be empty") LocalDate bookingDate, Customer customer,
+			Set<TripPackage> packageSet, TicketDetails ticketDetails) {
+		super();
+		this.bookingId = bookingId;
+		this.bookingType = bookingType;
+		this.bookingDescription = bookingDescription;
+		this.bookingTitle = bookingTitle;
+		this.bookingDate = bookingDate;
+		this.customer = customer;
+		this.packageSet = packageSet;
+		this.ticketDetails = ticketDetails;
+	}
+
+	public Booking() {
+		super();
+	}
+
+	public Integer getBookingId() {
+		return bookingId;
+	}
+
+	public void setBookingId(Integer bookingId) {
+		this.bookingId = bookingId;
+	}
+
+	public String getBookingType() {
+		return bookingType;
+	}
+
+	public void setBookingType(String bookingType) {
+		this.bookingType = bookingType;
+	}
+
+	public String getBookingDescription() {
+		return bookingDescription;
+	}
+
+	public void setBookingDescription(String bookingDescription) {
+		this.bookingDescription = bookingDescription;
+	}
+
+	public String getBookingTitle() {
+		return bookingTitle;
+	}
+
+	public void setBookingTitle(String bookingTitle) {
+		this.bookingTitle = bookingTitle;
+	}
+
+	public LocalDate getBookingDate() {
+		return bookingDate;
+	}
+
+	public void setBookingDate(LocalDate bookingDate) {
+		this.bookingDate = bookingDate;
+	}
+
+	public Customer getCustomer() {
+		return customer;
+	}
+
+	public void setCustomer(Customer customer) {
+		this.customer = customer;
+	}
+
+	public Set<TripPackage> getPackageSet() {
+		return packageSet;
+	}
+
+	public void setPackageSet(Set<TripPackage> packageSet) {
+		this.packageSet = packageSet;
+	}
+
+	public TicketDetails getTicketDetails() {
+		return ticketDetails;
+	}
+
+	public void setTicketDetails(TicketDetails ticketDetails) {
+		this.ticketDetails = ticketDetails;
+	}
+	
+	
 	
 
 }
