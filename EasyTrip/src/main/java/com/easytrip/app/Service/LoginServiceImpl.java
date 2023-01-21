@@ -9,8 +9,10 @@ import org.springframework.stereotype.Service;
 import com.easytrip.app.Exception.LoginException;
 import com.easytrip.app.Model.Admin;
 import com.easytrip.app.Model.CurrentUserSession;
+import com.easytrip.app.Model.Customer;
 import com.easytrip.app.Model.LoginDTO;
 import com.easytrip.app.Repository.AdminRepository;
+import com.easytrip.app.Repository.CustomerRepository;
 import com.easytrip.app.Repository.SessionRepository;
 
 import net.bytebuddy.utility.RandomString;
@@ -20,6 +22,9 @@ public class LoginServiceImpl implements LoginService{
 
 	@Autowired
 	private AdminRepository adminRepo;
+	
+	@Autowired
+	private CustomerRepository customerRepo;
 	
 	@Autowired
 	private SessionRepository sessionRepo;
@@ -32,8 +37,35 @@ public class LoginServiceImpl implements LoginService{
 		Admin existingAdmin = adminRepo.findByUserEmail(loginDto.getUserEmail());
 		
 		if(existingAdmin == null) {
-			throw new LoginException("please enter valid email address.");
+			
+			Customer existingCustomer = customerRepo.findByUserEmail(loginDto.getUserEmail());
+			
+			if(existingCustomer == null) {
+				throw new LoginException("please enter valid email address.");
+			}
+		
+			Optional<CurrentUserSession> validCustomerSessionOpt = sessionRepo.findById(existingCustomer.getCustomerId());
+			
+			if(validCustomerSessionOpt.isPresent()) {
+				throw new LoginException("User already logged In with this email");
+			}
+			
+			if(existingCustomer.getPassword().equals(loginDto.getPassword())) {
+				
+				String key = RandomString.make(6);
+				
+				CurrentUserSession currentUserSession = new CurrentUserSession(existingCustomer.getCustomerId(),key,LocalDateTime.now(),existingCustomer.getUserType());
+				
+				sessionRepo.save(currentUserSession);
+				
+				return currentUserSession.toString();
+				
+			}
+			else
+				throw new LoginException("please enter valid password");
 		}
+		
+		else {	
 		
 		Optional<CurrentUserSession> validCustomerSessionOpt = sessionRepo.findById(existingAdmin.getAdminId());
 		
@@ -45,7 +77,7 @@ public class LoginServiceImpl implements LoginService{
 			
 			String key = RandomString.make(6);
 			
-			CurrentUserSession currentUserSession = new CurrentUserSession(existingAdmin.getAdminId(),key,LocalDateTime.now());
+			CurrentUserSession currentUserSession = new CurrentUserSession(existingAdmin.getAdminId(),key,LocalDateTime.now(),existingAdmin.getUserType());
 			
 			sessionRepo.save(currentUserSession);
 			
@@ -54,7 +86,7 @@ public class LoginServiceImpl implements LoginService{
 		}
 		else
 			throw new LoginException("please enter valid password");
-		
+		}
 	}
 
 	@Override
