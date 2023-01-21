@@ -26,7 +26,7 @@ public class BusController {
 	@Autowired
 	private BusService bService;
 	
-	@PostMapping(value="/addBus")
+	@PostMapping("/addBus")
 	@JsonIgnore
 	public ResponseEntity<Bus> addBusHandler(@RequestBody Bus bus) throws BusException{
 		
