@@ -16,6 +16,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.Past;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.Data;
 
 @Data
@@ -37,7 +39,7 @@ public class Booking {
 	@JoinColumn(name="customerId")
 	private Customer customer  ;
 	
-	
+
 	@OneToMany(mappedBy = "booking",cascade = CascadeType.ALL)
 	private Set<TripPackage> packageSet = new HashSet<>() ;
 	

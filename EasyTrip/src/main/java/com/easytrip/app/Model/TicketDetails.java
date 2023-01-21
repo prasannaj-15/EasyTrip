@@ -11,10 +11,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.Data;
 
 @Entity
-@Data
 public class TicketDetails {
 	
 	@Id
@@ -27,5 +28,53 @@ public class TicketDetails {
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "ticketDetails")	
 	private Set<Route> routeSet = new HashSet<>();
+	
+	
+	
 
+	public Integer getTicketId() {
+		return ticketId;
+	}
+
+	public void setTicketId(Integer ticketId) {
+		this.ticketId = ticketId;
+	}
+
+	public String getTicketStatus() {
+		return ticketStatus;
+	}
+
+	public void setTicketStatus(String ticketStatus) {
+		this.ticketStatus = ticketStatus;
+	}
+
+	public Set<TripPackage> getPackageSet() {
+		return packageSet;
+	}
+
+	public void setPackageSet(Set<TripPackage> packageSet) {
+		this.packageSet = packageSet;
+	}
+
+	public Set<Route> getRouteSet() {
+		return routeSet;
+	}
+
+	public void setRouteSet(Set<Route> routeSet) {
+		this.routeSet = routeSet;
+	}
+
+	public TicketDetails(Integer ticketId, String ticketStatus, Set<TripPackage> packageSet, Set<Route> routeSet) {
+		super();
+		this.ticketId = ticketId;
+		this.ticketStatus = ticketStatus;
+		this.packageSet = packageSet;
+		this.routeSet = routeSet;
+	}
+
+	public TicketDetails() {
+		super();
+	}
+
+	
 }

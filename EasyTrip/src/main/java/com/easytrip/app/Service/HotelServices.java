@@ -13,6 +13,6 @@ public interface HotelServices {
 	public Hotel getHotelById(Integer hotelId)throws HotelException;
 	public Hotel updateHotel(Hotel hotel)throws HotelException;
 	public Hotel deleteHotelById(Integer hotelId)throws HotelException;
-	public Set<Hotel> assignHotelToTripPackage(TripPackage tripPackage,Integer tripPackageId)throws HotelException,PackageException;
-
+	public Hotel assignHotelToTripPackage(Integer hotelId,Integer tripPackageId)throws HotelException,PackageException;
+	public Set<Hotel> getHotelsByPackageId(Integer tripPackageId)throws HotelException;
 }

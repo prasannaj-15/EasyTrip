@@ -53,11 +53,21 @@ public class HotelController {
 		
 	}
 	
-	@PutMapping("/hotels/{tripPackageId}")
-	public ResponseEntity<Set<Hotel>> assignHotelToTripPackageHandler(@RequestBody TripPackage tripPackage,@PathVariable("tripPackageId") Integer tripPackageId){
+	@PutMapping("/hotels/{hotelId}/{tripPackageId}")
+	public ResponseEntity<Hotel> assignHotelToTripPackageHandler(@PathVariable Integer hotelId,@PathVariable("tripPackageId") Integer tripPackageId){
 //		System.out.println(tripPackageId);
-		Set<Hotel> hotel= hotelServices.assignHotelToTripPackage(tripPackage, tripPackageId);
+		Hotel hotel= hotelServices.assignHotelToTripPackage(hotelId, tripPackageId);
+		return new ResponseEntity<Hotel>(hotel, HttpStatus.OK);
+		
+	}
+	
+	@GetMapping("/allhotels/{id}")
+	public ResponseEntity<Set<Hotel>> getallHotelByPackageIdHandler(@PathVariable("id") Integer id){
+		
+		Set<Hotel> hotel= hotelServices.getHotelsByPackageId(id);
+		
 		return new ResponseEntity<Set<Hotel>>(hotel, HttpStatus.OK);
 		
 	}
+	
 }
