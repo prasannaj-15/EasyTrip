@@ -68,41 +68,66 @@ public class TripPackageServiceImplementation implements TripPackageServices {
 	
 	
 	@Override
-	public TripPackage searchTripPackage(Integer packageId) throws PackageException {
+	public TripPackage searchTripPackage(Integer packageId, String key) throws PackageException, AdminException {
+		
+		CurrentUserSession loggedInUser = sessionRepo.findByUuid(key);
+		
+		if(loggedInUser == null) {
+			throw new AdminException("Login first! or Please provide a valid key");
+		}
+		
 		Optional<TripPackage> opt=pdao.findById(packageId);
 		if(opt.isPresent()) {
 			return opt.get();
 		}else{
 			throw new PackageException("No package found with given Id..."+packageId);
 		}
+		
 	}
 	
 	
 	@Override
-	public TripPackage deleteTripPackage(Integer packageId) throws PackageException {
-		Optional<TripPackage> opt = pdao.findById(packageId);
-		if (opt.isPresent()) {
-			TripPackage tripPackage = opt.get();
-			
-			Set<Hotel> hSet = tripPackage.getHotelSet();
-			for(Hotel h1:hSet) {
-				h1.setTripPackage(null);
-			}
-			hSet.clear();
-			tripPackage.setHotelSet(hSet);
-			
-			pdao.deleteById(tripPackage.getPackageId());
-			return tripPackage;
-
-		} else
-			throw new PackageException("Package does not exist with roll :" + packageId);
-
+	public TripPackage deleteTripPackage(Integer packageId, String key) throws PackageException, AdminException {
+		
+		CurrentUserSession loggedInUser = sessionRepo.findByUuid(key);
+		
+		if(loggedInUser == null) {
+			throw new AdminException("Login first! or Please provide a valid key");
+		}
+		
+		if(loggedInUser.getUserType().equals("Admin")) {
+		
+			Optional<TripPackage> opt = pdao.findById(packageId);
+			if (opt.isPresent()) {
+				TripPackage tripPackage = opt.get();
+				
+				Set<Hotel> hSet = tripPackage.getHotelSet();
+				for(Hotel h1:hSet) {
+					h1.setTripPackage(null);
+				}
+				hSet.clear();
+				tripPackage.setHotelSet(hSet);
+				
+				pdao.deleteById(tripPackage.getPackageId());
+				return tripPackage;
+	
+			} else
+				throw new PackageException("Package does not exist with roll :" + packageId);
+		}
+		else
+			throw new AdminException("User is not Admin. This service is only accessable for admin.");
 	}
 
 	@Override
-	public TripPackage assignBookingToTripPackage(Integer bookingId, Integer tripPackageId)
-			throws BookingException, PackageException {
+	public TripPackage assignBookingToTripPackage(Integer bookingId, Integer tripPackageId, String key)
+			throws BookingException, PackageException, AdminException {
 
+		CurrentUserSession loggedInUser = sessionRepo.findByUuid(key);
+		
+		if(loggedInUser == null) {
+			throw new AdminException("Login first! or Please provide a valid key");
+		}
+		
 		Optional<Booking> optBooking=bdao.findById(bookingId);
 		Optional<TripPackage> optPackage=pdao.findById(tripPackageId);
 		if(optBooking.isPresent()) {
@@ -121,6 +146,30 @@ public class TripPackageServiceImplementation implements TripPackageServices {
 		}else{
 			throw new PackageException("No Booking found with id--> "+bookingId);
 		}
+		
+	}
+
+
+	@Override
+	public List<TripPackage> viewAllPackages(String key) throws AdminException {
+
+		CurrentUserSession loggedInUser = sessionRepo.findByUuid(key);
+		
+		if(loggedInUser == null) {
+			throw new AdminException("Login first! or Please provide a valid key");
+		}
+		
+		if(loggedInUser.getUserType().equals("Admin")) {
+		
+			List<TripPackage> packageList= pdao.findAll();
+			
+			if(packageList.isEmpty())
+				throw new PackageException("No pacages found..");
+			
+			return packageList;
+		}
+		else
+			throw new AdminException("User is not Admin. This service is only accessable for admin.");
 		
 	}
 

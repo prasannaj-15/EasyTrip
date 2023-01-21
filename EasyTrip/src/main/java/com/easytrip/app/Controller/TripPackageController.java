@@ -1,5 +1,7 @@
 package com.easytrip.app.Controller;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,31 +40,39 @@ private TripPackageServices packageService;
 	}
 	
 	@GetMapping("/packages/{id}")
-	public ResponseEntity<TripPackage> getTripPackageByIdHandler(@PathVariable("id") Integer id){
+	public ResponseEntity<TripPackage> getTripPackageByIdHandler(@PathVariable("id") Integer id, @RequestParam(required = false) String key){
 		
-		TripPackage student= packageService.searchTripPackage(id);
+		TripPackage student= packageService.searchTripPackage(id, key);
 		
 		return new ResponseEntity<TripPackage>(student, HttpStatus.OK);
 		
 	}
 	
 	@DeleteMapping("/packages/{id}")
-	public ResponseEntity<TripPackage> deleteTripPackageHandler(@PathVariable("id") Integer id){
+	public ResponseEntity<TripPackage> deleteTripPackageHandler(@PathVariable("id") Integer id, @RequestParam(required = false) String key){
 		
-		TripPackage deletedStudent= packageService.deleteTripPackage(id);
+		TripPackage deletedStudent= packageService.deleteTripPackage(id, key);
 		
 		return new ResponseEntity<TripPackage>(deletedStudent, HttpStatus.OK);
 	}
 	
 	@PutMapping("/packages/{bookingId}/{tripPackageId}")
-	public ResponseEntity<TripPackage> assignHotelToTripPackageHandler(@PathVariable("bookingId") Integer bookingId,@PathVariable("tripPackageId") Integer tripPackageId){
+	public ResponseEntity<TripPackage> assignHotelToTripPackageHandler(@PathVariable("bookingId") Integer bookingId,@PathVariable("tripPackageId") Integer tripPackageId, @RequestParam(required = false) String key){
 //		System.out.println(tripPackageId);
-		TripPackage tripPackage=packageService.assignBookingToTripPackage(bookingId, tripPackageId);
+		TripPackage tripPackage=packageService.assignBookingToTripPackage(bookingId, tripPackageId, key);
 		return new ResponseEntity<TripPackage>(tripPackage, HttpStatus.OK);
 		
 	}
 	
 	
+	@GetMapping("/packages")
+	public ResponseEntity<List<TripPackage>> getAllTripPackagesHandler(@RequestParam(required = false) String key){
+		
+		List<TripPackage> packages = packageService.viewAllPackages(key);
+		
+		return new ResponseEntity<>(packages, HttpStatus.OK);
+		
+	}
 	
 	}
 
