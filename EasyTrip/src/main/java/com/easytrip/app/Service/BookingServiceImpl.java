@@ -31,6 +31,7 @@ public class BookingServiceImpl implements BookingService {
 	
 	@Override
 	public Booking makeBooking(Booking book) throws BookingException {
+
        
 		Set<TripPackage> tripset=book.getPackageSet();
 		if(tripset.size()!=0) {
@@ -38,6 +39,8 @@ public class BookingServiceImpl implements BookingService {
 			pack.setBooking(book);
 		}
 		
+
+
 		}
 		  return br.save(book);			
 	}

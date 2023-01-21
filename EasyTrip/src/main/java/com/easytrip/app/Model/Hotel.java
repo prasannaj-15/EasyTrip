@@ -16,7 +16,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 @Entity
-
 public class Hotel {
 	
 	@Id
