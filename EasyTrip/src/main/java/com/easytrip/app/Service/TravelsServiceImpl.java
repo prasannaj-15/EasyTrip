@@ -2,11 +2,13 @@ package com.easytrip.app.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.easytrip.app.Exception.TravelException;
+import com.easytrip.app.Model.Bus;
 import com.easytrip.app.Model.Travels;
 import com.easytrip.app.Repository.TravelsDao;
 
@@ -17,11 +19,14 @@ public class TravelsServiceImpl implements TravelsService{
 	
 	@Override
 	public Travels addTravels(Travels travels) throws TravelException{
-		if(travels!=null) {
-			Travels savedTravels =tdao.save(travels);
-			
-			return savedTravels;
-		}else {
+		Set<Bus> busSet=travels.getBusSet();
+		if(busSet.size()!=0) {
+			for(Bus bus:busSet) {
+				bus.setTravels(travels);
+			}
+			return tdao.save(travels);
+		}
+		else {
 			throw new TravelException("Travels not added");
 		}
 		

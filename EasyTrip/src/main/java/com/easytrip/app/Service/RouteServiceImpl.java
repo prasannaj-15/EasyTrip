@@ -1,5 +1,6 @@
 package com.easytrip.app.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
@@ -54,6 +55,16 @@ public class RouteServiceImpl implements RouteService{
 			return route;
 		}else {
 			throw new RouteException("Invalid routeId...........");
+		}
+	}
+
+	@Override
+	public List<Route> viewRoute() throws RouteException {
+		List<Route> routes=rDao.findAll();
+		if(routes.size()==0) {
+			throw new RouteException("Routes not found..........");
+		}else {
+			return routes;
 		}
 	}
 
