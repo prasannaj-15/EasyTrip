@@ -1,6 +1,7 @@
 package com.easytrip.app.Service;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.easytrip.app.Exception.BookingException;
 import com.easytrip.app.Exception.CustomerException;
 import com.easytrip.app.Exception.HotelException;
+import com.easytrip.app.Exception.PackageException;
 import com.easytrip.app.Model.Booking;
 import com.easytrip.app.Model.Customer;
 import com.easytrip.app.Model.Hotel;
@@ -25,17 +27,22 @@ public class BookingServiceImpl implements BookingService {
 	@Autowired
 	public CustomerRepository customerRepository;
 	
+	
+	
 	@Override
 	public Booking makeBooking(Booking book) throws BookingException {
-		
-		Booking booking = br.save(book);
-		if(booking != null)
-		{
-			return booking;
+
+       
+		Set<TripPackage> tripset=book.getPackageSet();
+		if(tripset.size()!=0) {
+		for(TripPackage pack:tripset) {
+			pack.setBooking(book);
 		}
-		else {
-			throw new BookingException("sorry no booking");
-		}		
+		
+
+
+		}
+		  return br.save(book);			
 	}
 
 	@Override
@@ -67,38 +74,6 @@ public class BookingServiceImpl implements BookingService {
 		
 	}
 
-	@Override
-	public Set<Booking> assignCustomertoBooking(Customer customer, Integer customerId) throws BookingException {
-		
-		Optional<Customer> customerOpt = customerRepository.findById(customer.getCustomerId());
-		
-		if(customerOpt.isPresent()) {
-
-			
-			Customer existcustomer = customerOpt.get();
-			
-			Set<Booking> setBooking = customer.getBookingSet();
-			
-		
-		  Set<Booking> newBooking = new HashSet<>();
-		  
-		  for(Booking book: setBooking)
-		  {
-			  book.setCustomer(existcustomer);
-
-             Booking b1 = br.save(book);
-             
-             existcustomer.getBookingSet().add(b1);
-		  }
-      
-		  customerRepository.save(existcustomer);
-		  return setBooking; 
-	}
-		else {
-			throw new CustomerException("no booking found....");
-		}
-	}
-	
 }
 
 

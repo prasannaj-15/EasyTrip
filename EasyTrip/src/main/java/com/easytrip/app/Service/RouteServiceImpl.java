@@ -2,6 +2,7 @@ package com.easytrip.app.Service;
 
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.easytrip.app.Exception.BusException;
@@ -12,6 +13,7 @@ import com.easytrip.app.Repository.RouteDao;
 
 @Service
 public class RouteServiceImpl implements RouteService{
+	@Autowired
 	private RouteDao rDao;
 	
 	@Override
