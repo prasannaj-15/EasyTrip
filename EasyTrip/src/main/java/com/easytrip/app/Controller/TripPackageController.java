@@ -9,11 +9,15 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.easytrip.app.Exception.PackageException;
+import com.easytrip.app.Model.Booking;
+import com.easytrip.app.Model.Hotel;
 import com.easytrip.app.Model.TripPackage;
+import com.easytrip.app.Service.HotelServices;
 import com.easytrip.app.Service.TripPackageServices;
 
 
@@ -44,6 +48,14 @@ private TripPackageServices packageService;
 		TripPackage deletedStudent= packageService.deleteTripPackage(id);
 		
 		return new ResponseEntity<TripPackage>(deletedStudent, HttpStatus.OK);
+	}
+	
+	@PutMapping("/packages/{bookingId}/{tripPackageId}")
+	public ResponseEntity<TripPackage> assignHotelToTripPackageHandler(@PathVariable("bookingId") Integer bookingId,@PathVariable("tripPackageId") Integer tripPackageId){
+//		System.out.println(tripPackageId);
+		TripPackage tripPackage=packageService.assignBookingToTripPackage(bookingId, tripPackageId);
+		return new ResponseEntity<TripPackage>(tripPackage, HttpStatus.OK);
+		
 	}
 	
 	
