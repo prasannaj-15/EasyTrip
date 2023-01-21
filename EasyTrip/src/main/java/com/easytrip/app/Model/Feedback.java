@@ -22,7 +22,7 @@ public class Feedback {
 	private Integer feedbackId;
 	private String feedback;
 	private Double feedbackRating;
-	private LocalDate customerEmail;
+	private String customerEmail;
 	
 	
 	@ManyToOne(cascade = CascadeType.ALL)
