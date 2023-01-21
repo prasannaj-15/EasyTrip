@@ -9,6 +9,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.Data;
 
 @Entity
@@ -24,7 +26,7 @@ public class Bus {
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name="travelId")
 	private Travels travels;	
-	
+	@JsonIgnore
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name="routeId")
 	private Route route;

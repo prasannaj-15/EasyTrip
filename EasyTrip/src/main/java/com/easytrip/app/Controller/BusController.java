@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.easytrip.app.Exception.BusException;
 import com.easytrip.app.Exception.TravelException;
 import com.easytrip.app.Model.Bus;
+import com.easytrip.app.Model.Hotel;
 import com.easytrip.app.Model.Travels;
 import com.easytrip.app.Service.BusService;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -62,5 +63,32 @@ public class BusController {
 		
 		return new ResponseEntity<Bus>(searchBus,HttpStatus.OK);
 	}
+	
+	
+	@PutMapping("/bus/{busId}/{routeId}")
+	public ResponseEntity<Bus> assignHotelToTripPackageHandler(@PathVariable("busId") Integer busId,@PathVariable("routeId") Integer routeId){
+//		System.out.println(tripPackageId);
+		Bus bus= bService.assignBusToTripRoutes(busId, routeId);
+		return new ResponseEntity<Bus>(bus, HttpStatus.OK);
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 }

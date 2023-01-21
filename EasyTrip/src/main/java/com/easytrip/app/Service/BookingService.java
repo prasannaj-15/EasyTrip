@@ -1,5 +1,6 @@
 package com.easytrip.app.Service;
 
+import java.util.List;
 import java.util.Set;
 
 import com.easytrip.app.Exception.BookingException;
@@ -18,7 +19,9 @@ public interface BookingService {
 	  
 	  public Booking viewBooking(Integer bookingId) throws BookingException;
 	  
-	public Set<Booking> assignCustomertoBooking(Customer customer, Integer customerId)throws BookingException;  	  
+	  
+	  
+	  	  
 	  	  
 
 }
