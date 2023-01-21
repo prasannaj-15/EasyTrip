@@ -1,6 +1,7 @@
 package com.easytrip.app.Model;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -21,7 +22,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Data;
 
-@Data
+
 @Entity
 public class Booking {
 	
@@ -34,9 +35,9 @@ public class Booking {
 	private String bookingTitle;
 	
 	@Past(message = "date can't be empty")
-	private	LocalDate bookingDate;
+	private	LocalDateTime bookingDate;
 	
-	
+	@JsonIgnore
 	@ManyToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
 	@JoinColumn(name="customerId")
 	private Customer customer  ;
@@ -46,7 +47,11 @@ public class Booking {
 	private Set<TripPackage> packageSet = new HashSet<>() ;
 	
 	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name="ticketID")
+	@JsonIgnore
 	private TicketDetails ticketDetails;
+
+
 
 	public Booking(Integer bookingId, String bookingType, String bookingDescription, String bookingTitle,
 			@Past(message = "date can't be empty") LocalDate bookingDate, Customer customer,
@@ -65,6 +70,7 @@ public class Booking {
 	public Booking() {
 		super();
 	}
+
 
 	public Integer getBookingId() {
 		return bookingId;
@@ -98,11 +104,12 @@ public class Booking {
 		this.bookingTitle = bookingTitle;
 	}
 
-	public LocalDate getBookingDate() {
+
+	public LocalDateTime getBookingDate() {
 		return bookingDate;
 	}
 
-	public void setBookingDate(LocalDate bookingDate) {
+	public void setBookingDate(LocalDateTime bookingDate) {
 		this.bookingDate = bookingDate;
 	}
 
@@ -129,8 +136,6 @@ public class Booking {
 	public void setTicketDetails(TicketDetails ticketDetails) {
 		this.ticketDetails = ticketDetails;
 	}
-	
-	
-	
 
+	
 }

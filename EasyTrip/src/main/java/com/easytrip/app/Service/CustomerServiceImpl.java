@@ -43,8 +43,16 @@ public class CustomerServiceImpl implements CustomerServices {
 		
 	}
 	@Override
-	public Customer updateCustomer(Customer customer) throws CustomerException {
+	public Customer updateCustomer(Customer customer, String key) throws CustomerException {
 
+		CurrentUserSession loggedInUser = sessionRepo.findByUuid(key);
+		
+		if(loggedInUser == null) {
+			throw new AdminException("Login first! or Please provide a valid key");
+		}
+		
+		if(customer.getCustomerId() == loggedInUser.getUserId() || loggedInUser.getUserType().equals("Admin")) {
+		
 		 Optional<Customer> opt = cr.findById(customer.getCustomerId());
 			
 			if(opt.isPresent())
@@ -57,47 +65,76 @@ public class CustomerServiceImpl implements CustomerServices {
 			else {
 				throw new CustomerException("Customer not found..");
 			}
+			
+		}
+		else 
+			throw new CustomerException("Access Denied !");
+	}
 
+	@Override
+	public Customer deleteCustomer(Integer customerId, String key) throws CustomerException {
+
+
+		CurrentUserSession loggedInUser = sessionRepo.findByUuid(key);
+		
+		if(loggedInUser == null) {
+			throw new AdminException("Login first! or Please provide a valid key");
+		}
+		
+		if(customerId == loggedInUser.getUserId() || loggedInUser.getUserType().equals("Admin")) {
+		
+		
+			Optional<Customer> opt = cr.findById(customerId);
+			 if(opt.isPresent())
+			 {
+				  Customer cust = opt.get();
+				 cr.delete(cust);
+				 sessionRepo.delete(loggedInUser);
+				 return cust;
+			 }
+			 else 
+				 throw new CustomerException("Customer not found");
+			 
+		}
+		else 
+			throw new CustomerException("Access Denied !");
+	}
+
+	@Override
+	public Customer viewCustomer(Integer customerId, String key) throws CustomerException,AdminException {
+
+		CurrentUserSession loggedInUser = sessionRepo.findByUuid(key);
+		
+		if(loggedInUser == null) {
+			throw new AdminException("Login first! or Please provide a valid key");
+		}
+		
+		if(customerId == loggedInUser.getUserId() || loggedInUser.getUserType().equals("Admin")) {
+		
+		
+			Optional<Customer> opt = cr.findById(customerId);
+		
+			if(opt.isPresent())
+			{
+				return opt.get();
+			}
+			else 
+				throw new CustomerException("Invalid Customer details. Please check the details");
+				
+		}
+		else 
+			throw new CustomerException("Access Denied !");
 		
 	}
-
-	@Override
-	public Customer deleteCustomer(Customer customer) throws CustomerException {
-
-
-		Optional<Customer> opt = cr.findById(customer.getCustomerId());
-		 if(opt.isPresent())
-		 {
-			  Customer cust = opt.get();
-			 cr.delete(customer);
-			 return customer;
-		 }
-		 else {
-			 throw new CustomerException("Customer not found");
-		 }		
-	}
-
-	@Override
-	public Customer viewCustomer(Integer Customer_Id) throws CustomerException,AdminException {
-
-
-		Optional<Customer> opt = cr.findById(Customer_Id);
 	
-		if(opt.isPresent())
-		{
-			return opt.get();
-		}
-		else {
-			throw new CustomerException("Invalid Customer details. Please check teh details");
-		}		
-	}
+	
 	@Override
 	public List<Customer> viewAllCustomers(String key) throws CustomerException {
 		
 		CurrentUserSession loggedInUser = sessionRepo.findByUuid(key);
 		
 		if(loggedInUser == null) {
-			throw new AdminException("Please provide a valid key to update a customer");
+			throw new AdminException("Login first! or Please provide a valid key");
 		}
 		
 		if(loggedInUser.getUserType().equals("Admin")) {
@@ -114,7 +151,7 @@ public class CustomerServiceImpl implements CustomerServices {
 			throw new AdminException("User is not Admin. This service is only accessable for admin.");
 	}
 		
-	}
+}
 
 	
 

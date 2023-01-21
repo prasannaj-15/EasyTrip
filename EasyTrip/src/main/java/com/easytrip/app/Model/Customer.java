@@ -16,6 +16,8 @@ import javax.persistence.OneToMany;
 
 import org.hibernate.annotations.ManyToAny;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
@@ -42,6 +44,7 @@ public class Customer extends User {
 	@Embedded
 	private Address customerAddress;
 	
+	@JsonIgnore
 	@OneToMany(mappedBy="customer",cascade = CascadeType.ALL)
 	private Set<Booking> bookingSet =new HashSet<>();
 	

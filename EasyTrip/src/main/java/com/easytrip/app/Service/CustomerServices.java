@@ -10,11 +10,11 @@ public interface CustomerServices {
    
 	public Customer addCustomer(Customer customer) throws CustomerException;
 	
-	public Customer updateCustomer(Customer customer) throws CustomerException;
+	public Customer updateCustomer(Customer customer,String key) throws CustomerException;
 	
-	public Customer deleteCustomer(Customer customer) throws CustomerException;
+	public Customer deleteCustomer(Integer customerId,String key) throws CustomerException;
 	
-	public Customer viewCustomer(Integer Customer_Id) throws CustomerException;
+	public Customer viewCustomer(Integer customerId, String key) throws CustomerException;
 
 	//Admin
 	public List<Customer> viewAllCustomers(String key) throws CustomerException,AdminException;

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.easytrip.app.Exception.BookingException;
@@ -32,25 +33,26 @@ public class BookingController {
 	
 	
 	@PostMapping("/booking")
-	public ResponseEntity<Booking> addBookingHandler(@RequestBody Booking book) 
+	public ResponseEntity<Booking> addBookingHandler(@RequestBody Booking book, @RequestParam(required = false) String key) 
 	{
-		Booking bookin = bookingService.makeBooking(book);
+		Booking bookin = bookingService.makeBooking(book , key);
 		 return new ResponseEntity<Booking>(bookin,HttpStatus.CREATED);
 	}
 	
 	@DeleteMapping("/booking/{bookingId}")
-	public ResponseEntity<Booking> cancilBookinHandler(@PathVariable("bookingId") Integer bookingId)
-	{
-		Booking book = bookingService.cancelBooking(br.findById(bookingId).get());
+	public ResponseEntity<Booking> cancilBookinHandler(@PathVariable("bookingId") Integer bookingId, @RequestParam(required = false) String key)
+	{			
+		
+		Booking book = bookingService.cancelBooking(bookingId, key);
 		
 		return new ResponseEntity<Booking>(book,HttpStatus.OK);
 		
 	}
 	
 	@GetMapping("/booking/{bookingId}")
-	public ResponseEntity<Booking> viewBookingHandler(@PathVariable("bookingId") Integer bookingId)
+	public ResponseEntity<Booking> viewBookingHandler(@PathVariable("bookingId") Integer bookingId, @RequestParam(required = false) String key)
 	{
-		Booking book = bookingService.viewBooking(bookingId);
+		Booking book = bookingService.viewBooking(bookingId, key);
 		
 		return new ResponseEntity<Booking>(book,HttpStatus.OK);
 	}
