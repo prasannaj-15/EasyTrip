@@ -62,10 +62,10 @@ public class HotelController {
 		
 	}
 	
-	@GetMapping("/allhotels/{id}")
-	public ResponseEntity<Set<Hotel>> getallHotelByPackageIdHandler(@PathVariable("id") Integer id, @RequestParam(required = false) String key){
+	@GetMapping("/allhotels/{packageId}")
+	public ResponseEntity<Set<Hotel>> getallHotelByPackageIdHandler(@PathVariable("packageId") Integer packageId, @RequestParam(required = false) String key){
 		
-		Set<Hotel> hotel= hotelServices.getHotelsByPackageId(id, key);
+		Set<Hotel> hotel= hotelServices.getHotelsByPackageId(packageId, key);
 		
 		return new ResponseEntity<Set<Hotel>>(hotel, HttpStatus.OK);
 		

@@ -54,7 +54,7 @@ public class BusController {
 		return new ResponseEntity<Bus>(deletedBus,HttpStatus.OK);
 	}
 	
-	@GetMapping("/searchBus/{busId}")
+	@GetMapping("/bus/{busId}")
 	public ResponseEntity<Bus> searchByIdBusHandler(@PathVariable("busId") Integer busId, @RequestParam(required = false) String key) throws BusException{
 		
 		Bus searchBus =bService.searchBus(busId, key);
@@ -63,7 +63,7 @@ public class BusController {
 	}
 	
 	
-	@PutMapping("/bus/{busId}/{travelId}")
+	@PutMapping("/assignbustotravel/{busId}/{travelId}")
 	public ResponseEntity<Bus> assignBusToTravelHandler(@PathVariable("busId") Integer busId,@PathVariable("travelId") Integer travelId, @RequestParam(required = false) String key){
 		
     Bus bus= bService.assignBusToTravels(busId, travelId, key);
@@ -71,8 +71,8 @@ public class BusController {
     
     }
     
-	@PutMapping("/bus/{busId}/{routeId}")
-	public ResponseEntity<Bus> assignHotelToTripPackageHandler(@PathVariable("busId") Integer busId,@PathVariable("routeId") Integer routeId, @RequestParam(required = false) String key){
+	@PutMapping("/assignbustoroute/{busId}/{routeId}")
+	public ResponseEntity<Bus> assignBusToRouteHandler(@PathVariable("busId") Integer busId,@PathVariable("routeId") Integer routeId, @RequestParam(required = false) String key){
 //		System.out.println(tripPackageId);
 		Bus bus= bService.assignBusToTripRoutes(busId, routeId, key);
 

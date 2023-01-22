@@ -57,7 +57,7 @@ private TripPackageServices packageService;
 	}
 	
 	@PutMapping("/packages/{bookingId}/{tripPackageId}")
-	public ResponseEntity<TripPackage> assignHotelToTripPackageHandler(@PathVariable("bookingId") Integer bookingId,@PathVariable("tripPackageId") Integer tripPackageId, @RequestParam(required = false) String key){
+	public ResponseEntity<TripPackage> assignBookingToTripPackageHandler(@PathVariable("bookingId") Integer bookingId,@PathVariable("tripPackageId") Integer tripPackageId, @RequestParam(required = false) String key){
 //		System.out.println(tripPackageId);
 		TripPackage tripPackage=packageService.assignBookingToTripPackage(bookingId, tripPackageId, key);
 		return new ResponseEntity<TripPackage>(tripPackage, HttpStatus.OK);

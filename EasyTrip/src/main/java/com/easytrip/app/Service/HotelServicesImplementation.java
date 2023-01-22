@@ -95,6 +95,7 @@ public class HotelServicesImplementation implements HotelServices {
 		
 			Optional<Hotel> opt=hdao.findById(hotel.getHotelId());
 			if(opt.isPresent()) {
+				hotel.setHotelStatus(Status.Available);
 				return 	hdao.save(hotel);
 			}else
 				throw new HotelException("No Hotel found ");

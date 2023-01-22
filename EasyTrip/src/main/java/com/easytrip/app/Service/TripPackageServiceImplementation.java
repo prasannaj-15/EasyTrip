@@ -64,12 +64,9 @@ public class TripPackageServiceImplementation implements TripPackageServices {
 				for(Hotel hotel:hotelSet) {
 					hotel.setTripPackage(pack);
 				}
-			
-				return	pdao.save(pack);
-			
+					
 			}
-			else 
-				throw new PackageException("Supplied Hotel set is empty");
+				return	pdao.save(pack);
 		}
 		else
 			throw new AdminException("User is not Admin. This service is only accessable for admin.");
@@ -85,6 +82,7 @@ public class TripPackageServiceImplementation implements TripPackageServices {
 			throw new AdminException("Login first! or Please provide a valid key");
 		}
 		
+	
 		Optional<TripPackage> opt=pdao.findById(packageId);
 		if(opt.isPresent()) {
 			return opt.get();
@@ -186,7 +184,8 @@ public class TripPackageServiceImplementation implements TripPackageServices {
 	@Override
 	public TripPackage assignTicketToTripPackage(Integer ticketId, Integer tripPackageId, String key)
 			throws PackageException, AdminException {
-	CurrentUserSession loggedInUser = sessionRepo.findByUuid(key);
+		
+		CurrentUserSession loggedInUser = sessionRepo.findByUuid(key);
 		
 		if(loggedInUser == null) {
 			throw new AdminException("Login first! or Please provide a valid key");

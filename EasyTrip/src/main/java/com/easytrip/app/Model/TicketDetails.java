@@ -32,9 +32,11 @@ public class TicketDetails {
 	
 	
 	@OneToMany(cascade = CascadeType.ALL,mappedBy = "ticket")
+	@JsonIgnore
 	private Set<TripPackage> packageSet = new HashSet<>();
 	
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "ticketDetails")	
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "ticketDetails")
+	@JsonIgnore
 	private Set<Route> routeSet = new HashSet<>();
 	
 

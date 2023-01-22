@@ -37,7 +37,7 @@ public class CustomerServiceImpl implements CustomerServices {
 			   	
 		  }
 		  else {
-			  throw new CustomerException("Customer is not added");
+			  throw new CustomerException("Customer already exist whith email :"+ customer.getUserEmail());
 		  }	 
 		
 		

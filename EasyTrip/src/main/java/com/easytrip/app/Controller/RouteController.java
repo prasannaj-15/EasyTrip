@@ -19,6 +19,7 @@ import com.easytrip.app.Exception.RouteException;
 import com.easytrip.app.Exception.TravelException;
 import com.easytrip.app.Model.Route;
 import com.easytrip.app.Model.Travels;
+import com.easytrip.app.Model.TripPackage;
 import com.easytrip.app.Service.RouteService;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -68,4 +69,10 @@ public class RouteController {
 		return new ResponseEntity<>(route, HttpStatus.OK);
 	}
 
+	@PutMapping("/route/assigntickettoroute/{ticketId}/{routeId}")
+	public ResponseEntity<Route> assignTicketToRouteHandler(@PathVariable("ticketId") Integer ticketId,@PathVariable("routeId") Integer routeId, @RequestParam(required = false) String key){
+		Route route = rService.assignTicketToRoute(ticketId, routeId, key);
+		return new ResponseEntity<>(route, HttpStatus.OK);
+		
+	}
 }

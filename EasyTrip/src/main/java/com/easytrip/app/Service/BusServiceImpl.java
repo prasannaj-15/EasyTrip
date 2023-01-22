@@ -209,11 +209,11 @@ public class BusServiceImpl implements BusService{
 				bDao.save(bus);
 				return bus;
 			}else {
-				throw new PackageException("No Hotel found with id--> "+routeId);
+				throw new PackageException("No Route found with id--> "+routeId);
 			}
 			
 		}else{
-			throw new PackageException("No Hotel found with id--> "+busId);
+			throw new PackageException("No Bus found with id--> "+busId);
 		}
 
 	}

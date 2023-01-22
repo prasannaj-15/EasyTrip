@@ -14,6 +14,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.Data;
 
 @Entity
@@ -33,6 +35,7 @@ public class Route {
 	@OneToMany(cascade = CascadeType.ALL,mappedBy = "route")
 	private Set<Bus> busses= new HashSet<>();
 	
+	@JsonIgnore
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "ticketId")
 	private TicketDetails ticketDetails;

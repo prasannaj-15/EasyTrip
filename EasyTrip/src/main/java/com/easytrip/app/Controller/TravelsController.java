@@ -51,8 +51,8 @@ public class TravelsController {
 		return new ResponseEntity<Travels>(deletedTravels,HttpStatus.OK);
 	}
 	
-	@JsonIgnore
-	@GetMapping("/searchTravels/{travelId}")
+	
+	@GetMapping("/travels/{travelId}")
 	public ResponseEntity<Travels> searchTravelsByIdHandler(@PathVariable("travelId") Integer travelId, @RequestParam(required = false) String key) throws TravelException{
 		
 		Travels travels =tService.searchTravels(travelId, key);
@@ -60,8 +60,8 @@ public class TravelsController {
 		return new ResponseEntity<Travels>(travels,HttpStatus.OK);
 	}
 	
-	@JsonIgnore
-	@GetMapping("viewTravels")
+	
+	@GetMapping("travels")
 	public ResponseEntity<List<Travels>> viewTravelsByIdHandler(@RequestParam(required = false) String key) throws TravelException{
 		List<Travels> travels=tService.viewTravels(key);
 		
