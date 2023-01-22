@@ -9,14 +9,18 @@ import org.springframework.stereotype.Service;
 
 import com.easytrip.app.Exception.AdminException;
 import com.easytrip.app.Exception.BookingException;
+import com.easytrip.app.Exception.HotelException;
 import com.easytrip.app.Exception.PackageException;
 import com.easytrip.app.Model.Booking;
 import com.easytrip.app.Model.CurrentUserSession;
 import com.easytrip.app.Model.Hotel;
 import com.easytrip.app.Model.Route;
+import com.easytrip.app.Model.Status;
+import com.easytrip.app.Model.TicketDetails;
 import com.easytrip.app.Model.TripPackage;
 import com.easytrip.app.Repository.AdminRepository;
 import com.easytrip.app.Repository.SessionRepository;
+import com.easytrip.app.Repository.TicketDetailsRepository;
 import com.easytrip.app.Repository.BookingRepository;
 import com.easytrip.app.Repository.TripPackageDao;
 
@@ -36,8 +40,13 @@ public class TripPackageServiceImplementation implements TripPackageServices {
   
   @Autowired
 	private BookingRepository bdao;
+  
+  @Autowired
+ 	private TicketDetailsRepository tdao;
+
 
 	
+  
 	@Override
 	public TripPackage addTripPackage(TripPackage pack, String key) throws PackageException, AdminException {
 		
@@ -171,6 +180,49 @@ public class TripPackageServiceImplementation implements TripPackageServices {
 		else
 			throw new AdminException("User is not Admin. This service is only accessable for admin.");
 		
+	}
+
+
+	@Override
+	public TripPackage assignTicketToTripPackage(Integer ticketId, Integer tripPackageId, String key)
+			throws PackageException, AdminException {
+	CurrentUserSession loggedInUser = sessionRepo.findByUuid(key);
+		
+		if(loggedInUser == null) {
+			throw new AdminException("Login first! or Please provide a valid key");
+		}
+		
+		Optional<TicketDetails> optTicket=tdao.findById(ticketId);
+	
+		Optional<TripPackage> optPackage=pdao.findById(tripPackageId);
+		if(optTicket.isPresent()) {
+			
+			TicketDetails ticket = optTicket.get();
+			
+			
+			if(optPackage.isPresent()) {
+				TripPackage tPackage =optPackage.get();
+				tPackage.setTicket(ticket);
+				Double previousTicketCost=ticket.getTotalTicketCost();
+				if(previousTicketCost==null || previousTicketCost==0) {
+					ticket.setTotalTicketCost(tPackage.getPackageCost());
+				}
+				else {
+					ticket.setTotalTicketCost(previousTicketCost+tPackage.getPackageCost());
+					
+				}
+				
+				ticket.getPackageSet().add(tPackage);
+				
+				pdao.save(tPackage);
+				return tPackage;
+			}else {
+				throw new PackageException("No TripPackage found with id--> "+tripPackageId);
+			}
+			
+		}else{
+			throw new HotelException("No Hotel found with id--> "+ticketId);
+		}
 	}
 
 

@@ -42,6 +42,7 @@ private Booking booking;
 @OneToMany(mappedBy="tripPackage",cascade = CascadeType.ALL)
 private Set<Hotel> hotelSet = new HashSet<>(); 
 
+@JsonIgnore
 @ManyToOne(cascade = CascadeType.ALL)
 @JoinColumn(name = "ticket_id")
 private TicketDetails ticket;

@@ -71,4 +71,13 @@ public class HotelController {
 		
 	}
 	
+	@GetMapping("/availablehotels")
+	public ResponseEntity<Set<Hotel>> getallAvailableHotels(@RequestParam(required = false) String key){
+		
+		Set<Hotel> hotel= hotelServices.getAvailableHotelsByHotelStatus(key);
+		return new ResponseEntity<Set<Hotel>>(hotel, HttpStatus.OK);
+		
+	}
+	
+	
 }

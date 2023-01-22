@@ -4,6 +4,8 @@ import java.time.LocalDate;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -25,7 +27,13 @@ public class Hotel {
 	private String hotelDescription;
 	private String hotelName;
 	private	Double hotelRent;
-	private String hotelStatus;
+	
+	public Hotel() {
+		super();
+	}
+
+	@Enumerated(value = EnumType.STRING)
+	private Status hotelStatus;
 	
 	@JsonIgnore
 	@ManyToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
@@ -33,7 +41,7 @@ public class Hotel {
 	private TripPackage tripPackage;
 
 	public Hotel(Integer hotelId, String hotelType, String hotelDescription, String hotelName, Double hotelRent,
-			String hotelStatus, TripPackage tripPackage) {
+			Status hotelStatus, TripPackage tripPackage) {
 		super();
 		this.hotelId = hotelId;
 		this.hotelType = hotelType;
@@ -42,10 +50,6 @@ public class Hotel {
 		this.hotelRent = hotelRent;
 		this.hotelStatus = hotelStatus;
 		this.tripPackage = tripPackage;
-	}
-
-	public Hotel() {
-		super();
 	}
 
 	public Integer getHotelId() {
@@ -88,11 +92,11 @@ public class Hotel {
 		this.hotelRent = hotelRent;
 	}
 
-	public String getHotelStatus() {
+	public Status getHotelStatus() {
 		return hotelStatus;
 	}
 
-	public void setHotelStatus(String hotelStatus) {
+	public void setHotelStatus(Status hotelStatus) {
 		this.hotelStatus = hotelStatus;
 	}
 
@@ -103,5 +107,7 @@ public class Hotel {
 	public void setTripPackage(TripPackage tripPackage) {
 		this.tripPackage = tripPackage;
 	}
+	
+	
 	
 }
