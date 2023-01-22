@@ -43,19 +43,19 @@ public class AdminController {
 	}
 	
 	@GetMapping("/admin/{adminId}")
-	public ResponseEntity<Admin> getAdminDetailsHandler(@PathVariable("adminId") Integer adminId){
+	public ResponseEntity<Admin> getAdminDetailsHandler(@PathVariable("adminId") Integer adminId, @RequestParam(required = false) String key){
 
 		
-		Admin admin = adminService.getAdminDetails(adminId);
+		Admin admin = adminService.getAdminDetails(adminId, key);
 		
 		return new ResponseEntity<>(admin, HttpStatus.OK);
 	}
 	
 	@DeleteMapping("/admin/{adminId}")
-	public ResponseEntity<Admin> deleteAdminHandler(@PathVariable("adminId") Integer adminId){
+	public ResponseEntity<Admin> deleteAdminHandler(@PathVariable("adminId") Integer adminId, @RequestParam(required = false) String key){
 
 		
-		Admin deletedAdmin = adminService.deleteAdmin(adminId);
+		Admin deletedAdmin = adminService.deleteAdmin(adminId, key);
 		
 		return new ResponseEntity<>(deletedAdmin, HttpStatus.OK);
 	}
