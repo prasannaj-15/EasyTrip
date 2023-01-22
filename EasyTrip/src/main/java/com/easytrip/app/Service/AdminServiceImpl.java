@@ -61,23 +61,46 @@ public class AdminServiceImpl implements AdminService{
 
 
 	@Override
-	public Admin getAdminDetails(Integer adminId) throws AdminException {
+	public Admin getAdminDetails(Integer adminId, String key) throws AdminException {
 
+		CurrentUserSession loggedInUser = sessionRepo.findByUuid(key);
+		
+		if(loggedInUser == null) {
+			throw new AdminException("Please provide a valid key to update a admin");
+		}
+		
+		if(adminId == loggedInUser.getUserId()) {
+			
+		
 		Admin admin = adminRepo.findById(adminId).orElseThrow(()-> new AdminException("Admin not present with AdminId : "+adminId));
 		
 
 		return admin;
+		}
+		else
+			throw new AdminException("Invalid Customer Details, please login first");
 	}
 
 
 	@Override
-	public Admin deleteAdmin(Integer adminId) throws AdminException {
+	public Admin deleteAdmin(Integer adminId, String key) throws AdminException {
 
-		Admin admin = adminRepo.findById(adminId).orElseThrow(()-> new AdminException("Admin not present with AdminId : "+adminId));
+		CurrentUserSession loggedInUser = sessionRepo.findByUuid(key);
 		
+		if(loggedInUser == null) {
+			throw new AdminException("Please provide a valid key to update a admin");
+		}
+		
+		if(adminId == loggedInUser.getUserId()) {
+		
+		Admin admin = adminRepo.findById(adminId).orElseThrow(()-> new AdminException("Admin not present with AdminId : "+adminId));
+		sessionRepo.delete(loggedInUser);
 		adminRepo.deleteById(adminId);
 		
-		return admin; 
+		return admin;
+		}
+		else
+			throw new AdminException("Invalid Customer Details, please login first");
 	}
 	
 	
