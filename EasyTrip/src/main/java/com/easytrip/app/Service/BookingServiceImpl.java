@@ -19,6 +19,7 @@ import com.easytrip.app.Model.Booking;
 import com.easytrip.app.Model.CurrentUserSession;
 import com.easytrip.app.Model.Customer;
 import com.easytrip.app.Model.Hotel;
+import com.easytrip.app.Model.Status;
 import com.easytrip.app.Model.TicketDetails;
 import com.easytrip.app.Model.TripPackage;
 import com.easytrip.app.Repository.BookingRepository;
@@ -54,7 +55,12 @@ public class BookingServiceImpl implements BookingService {
 		
 		book.setCustomer(customer);
 		book.setBookingDate(LocalDateTime.now());
+		TicketDetails ticket = new TicketDetails();
+		book.setTicketDetails(ticket);
 		
+		ticket.setTicketStatus(Status.Available);
+		ticket.setBooking(book);
+	
 		return br.save(book);
 				
 	}

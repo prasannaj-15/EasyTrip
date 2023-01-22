@@ -16,4 +16,6 @@ public interface HotelServices {
 	public Hotel deleteHotelById(Integer hotelId, String key)throws HotelException, AdminException;
 	public Hotel assignHotelToTripPackage(Integer hotelId,Integer tripPackageId, String key)throws HotelException,PackageException, AdminException;
 	public Set<Hotel> getHotelsByPackageId(Integer tripPackageId, String key)throws HotelException, AdminException;
+	public Set<Hotel> getAvailableHotelsByHotelStatus(String key)throws HotelException, AdminException;
+	
 }

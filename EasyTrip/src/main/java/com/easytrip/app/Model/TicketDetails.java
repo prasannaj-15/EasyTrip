@@ -6,6 +6,8 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -23,7 +25,11 @@ public class TicketDetails {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer ticketId;
-	private String ticketStatus;
+	private Double totalTicketCost;
+	
+	@Enumerated(value = EnumType.STRING)
+	private Status ticketStatus;
+	
 	
 	@OneToMany(cascade = CascadeType.ALL,mappedBy = "ticket")
 	private Set<TripPackage> packageSet = new HashSet<>();
@@ -47,12 +53,22 @@ public class TicketDetails {
 		this.ticketId = ticketId;
 	}
 
-	public String getTicketStatus() {
+
+
+	public Status getTicketStatus() {
 		return ticketStatus;
 	}
 
-	public void setTicketStatus(String ticketStatus) {
+	public void setTicketStatus(Status ticketStatus) {
 		this.ticketStatus = ticketStatus;
+	}
+
+	public Booking getBooking() {
+		return booking;
+	}
+
+	public void setBooking(Booking booking) {
+		this.booking = booking;
 	}
 
 	public Set<TripPackage> getPackageSet() {
@@ -71,12 +87,27 @@ public class TicketDetails {
 		this.routeSet = routeSet;
 	}
 
-	public TicketDetails(Integer ticketId, String ticketStatus, Set<TripPackage> packageSet, Set<Route> routeSet) {
+	
+
+	
+
+	public Double getTotalTicketCost() {
+		return totalTicketCost;
+	}
+
+	public void setTotalTicketCost(Double totalTicketCost) {
+		this.totalTicketCost = totalTicketCost;
+	}
+
+	public TicketDetails(Integer ticketId, Double totalTicketCost, Status ticketStatus, Set<TripPackage> packageSet,
+			Set<Route> routeSet, Booking booking) {
 		super();
 		this.ticketId = ticketId;
+		this.totalTicketCost = totalTicketCost;
 		this.ticketStatus = ticketStatus;
 		this.packageSet = packageSet;
 		this.routeSet = routeSet;
+		this.booking = booking;
 	}
 
 	public TicketDetails() {

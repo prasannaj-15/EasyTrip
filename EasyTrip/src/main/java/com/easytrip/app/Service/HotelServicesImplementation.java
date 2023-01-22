@@ -12,6 +12,7 @@ import com.easytrip.app.Exception.HotelException;
 import com.easytrip.app.Exception.PackageException;
 import com.easytrip.app.Model.CurrentUserSession;
 import com.easytrip.app.Model.Hotel;
+import com.easytrip.app.Model.Status;
 import com.easytrip.app.Model.TripPackage;
 import com.easytrip.app.Repository.AdminRepository;
 import com.easytrip.app.Repository.HotelDao;
@@ -50,6 +51,8 @@ public class HotelServicesImplementation implements HotelServices {
 				if(hotel==null) {
 					throw new HotelException("Supplied hotel is invalid..");
 				}else {
+					hotel.setHotelStatus(Status.Available);
+					
 					return	hdao.save(hotel);
 					}
 			}
@@ -150,13 +153,18 @@ public class HotelServicesImplementation implements HotelServices {
 		}
 		
 		Optional<Hotel> optHotel=hdao.findById(hotelId);
+	
 		Optional<TripPackage> optPackage=pdao.findById(tripPackageId);
 		if(optHotel.isPresent()) {
+			
 			Hotel hotel = optHotel.get();
+			
+			if(hotel.getHotelStatus().equals(Status.Available)) {
 			if(optPackage.isPresent()) {
 				TripPackage tPackage =optPackage.get();
 				tPackage.getHotelSet().add(hotel);
 				hotel.setTripPackage(tPackage);
+				hotel.setHotelStatus(Status.Unavailable);
 				hdao.save(hotel);
 				return hotel;
 			}else {
@@ -164,7 +172,11 @@ public class HotelServicesImplementation implements HotelServices {
 			}
 			
 		}else{
-			throw new PackageException("No Hotel found with id--> "+hotelId);
+			throw new HotelException(" Hotel Not Available  with id--> "+hotelId);
+		}
+			
+		}else{
+			throw new HotelException("No Hotel found with id--> "+hotelId);
 		}
 		
 	}
@@ -194,11 +206,18 @@ public class HotelServicesImplementation implements HotelServices {
 			throw new HotelException("No package found with given PackageId..."+tripPackageId);
 		}
 		
-	
+	}
 
-
 	
 	
+	@Override
+	public Set<Hotel> getAvailableHotelsByHotelStatus(String key) throws HotelException, AdminException {
+		
+	Set<Hotel> hotels = hdao.getAllHotelByStatus(Status.Available);
+		if(hotels.isEmpty()) {
+			throw new HotelException(" Hotels Not Available");
+		}
+		return hotels;
 	}
 	
 	

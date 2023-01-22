@@ -74,6 +74,13 @@ private TripPackageServices packageService;
 		
 	}
 	
+	@PutMapping("/packages/assigntickettotrip/{ticketId}/{tripPackageId}")
+	public ResponseEntity<TripPackage> assignTicketToTripPackageHandler(@PathVariable("ticketId") Integer ticketId,@PathVariable("tripPackageId") Integer tripPackageId, @RequestParam(required = false) String key){
+		TripPackage tripPackage=packageService.assignTicketToTripPackage(ticketId, tripPackageId, key);
+		return new ResponseEntity<TripPackage>(tripPackage, HttpStatus.OK);
+		
+	}
+	
 	}
 
 

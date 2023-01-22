@@ -16,4 +16,5 @@ public interface TripPackageServices {
 	public TripPackage deleteTripPackage(Integer packageId, String key) throws PackageException, AdminException;
 	public TripPackage assignBookingToTripPackage(Integer bookingId,Integer tripPackageId, String key)throws BookingException,PackageException, AdminException;
 	public List<TripPackage> viewAllPackages(String key) throws PackageException, AdminException;
+	public TripPackage assignTicketToTripPackage(Integer ticketId,Integer tripPackageId,String key)throws PackageException, AdminException;
 }
