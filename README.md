@@ -112,7 +112,7 @@ A Trip Management System is a software application that allows users to plan, or
 
 ### Admin Module
 
-# Admin
+### Admin
 
 * `Method - POST -> /admin` : Register new Admin
 * `Method - PUT -> /admin?key="session key"` : Update Admin using valid session key
@@ -120,14 +120,14 @@ A Trip Management System is a software application that allows users to plan, or
 * `Method - GET -> /customers?key="session key"` : View Admin all customers with details using valid admin session key
 * `Method - DELETE -> /admin?key="session key"` : delete Admin himself using admin Id and valid session key
 
-# Package
+### Package
 
 * `Method - POST -> /packages?key="session key"` : Admin can create new packages using valid admin session key
 * `Method - GET -> /packages?key="session key"` : Admin view all existing packages using valid admin session key
 * `Method - GET -> /packages{id}?key="session key"` : Admin view package by packageId details using package Id and valid admin session key
 * `Method - DELETE -> /packages{id}?key="session key"` : Admin can delete package using packages Id and valid admin session key
 
-# Hotel
+### Hotel
 
 * `Method - POST -> /hotels?key="session key"` : Admin add new hotels with details into database with valid admin session key
 * `Method - PUT -> /hotels?key="session key"` : Admin can update hotel details using valid admin session key
@@ -137,7 +137,7 @@ A Trip Management System is a software application that allows users to plan, or
 * `Method - PUT -> /hotels{hotelId}/{tripPackageId}?key="session key"` : Admin can add hotel into particular package using valid admin session key
 * `Method - DELETE -> /hotels{id}?key="session key"` : Admin can delete hotel using hotel Id and valid admin session key
 
-# Travel
+### Travel
 
 * `Method - POST -> /travels?key="session key"` : Admin add new travel agency with details into database with valid admin session key
 * `Method - PUT -> /travels?key="session key"` : Admin can update travels details using valid admin session key
@@ -145,7 +145,7 @@ A Trip Management System is a software application that allows users to plan, or
 * `Method - GET -> /travels{travelId}?key="session key"` : Admin can view travels agencies details using travel Id and valid admin session key
 * `Method - DELETE -> /travels{travelsId}?key="session key"` : Admin can delete travel agency using travel Id and valid admin session key
 
-# Bus
+### Bus
 
 * `Method - POST -> /bus?key="session key"` : Admin add new bus with details into database with valid admin session key
 * `Method - PUT -> /bus?key="session key"` : Admin can update bus details using valid admin session key
@@ -154,7 +154,7 @@ A Trip Management System is a software application that allows users to plan, or
 * `Method - PUT -> /assignbustoroute/{busId}/{routeId}?key="session key"` : Admin can asign route to bus using routeId,busId and valid admin session key
 * `Method - DELETE -> /bus{busId}?key="session key"` : Admin can delete bus using bus Id and valid admin session key
 
-# Route
+### Route
 
 * `Method - POST -> /route?key="session key"` : Admin add new bus route with details into database with valid admin session key
 * `Method - PUT -> /route?key="session key"` : Admin can update bus route details using valid admin session key
